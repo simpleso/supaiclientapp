@@ -1,0 +1,8 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="dialog_width">350dip</dimen>
+
+    <dimen name="local_view_width">100dip</dimen>
+    <dimen name="local_view_height">170dip</dimen>
+</resources>

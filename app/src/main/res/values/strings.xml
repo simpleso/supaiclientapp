@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">速派超人</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="networf_errot">网络连接失败，请稍后再试</string>
+
+    <string name="login_overdue">您的账号在其它设备上登录, 如非本人操作, 可能密码已经泄露, 请及时修改密码或联系工作人员.</string>
+
+    <string name="error_view_loading">加载中…</string>
+    <string name="error_view_load_error_click_to_refresh">内容加载失败\r\n点击重新加载</string>
+    <string name="error_view_network_error_click_to_refresh">没有可用的网络</string>
+    <string name="tip_network_error">没有可用的网络</string>
+    <string name="loading_no_more">已加载全部</string>
+    <string name="error_view_no_data">暂无内容</string>
+    <string name="loading">加载中…</string>
+
+    <string name="user">个人中心</string>
+    <string name="myIntegral">我的积分</string>
+
+</resources>

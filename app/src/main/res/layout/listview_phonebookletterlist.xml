@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/first_char"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#eeeeee"
+        android:gravity="center_vertical|left"
+        android:padding="3dip"
+        android:text="#"
+        android:textColor="@color/base_black_01"
+        android:textSize="@dimen/basesize03" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="张三"
+            android:textColor="@color/base_black_01"
+            android:textSize="@dimen/basesize02" />
+
+        <View
+            style="@style/baseline_height"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:padding="5dip"
+            android:text="18723182922"
+            android:textColor="@color/base_black_01"
+            android:textSize="@dimen/basesize02" />
+
+    </LinearLayout>
+
+    <View style="@style/baseline_width" />
+</com.zhy.autolayout.AutoLinearLayout>

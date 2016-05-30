@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#fbfaf8</color>
+    <!--<color name="colorPrimary">#fbfbf8</color>-->
+    <color name="colorPrimaryDark">#fbfaf8</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="bar_title">#858586</color>
+
+    <color name="base_blue">#59aafc</color>
+    <color name="base_blue_nomo">#00aafc</color>
+
+    <color name="base_red">#fa7370</color>
+
+
+    <color name="base_black_01">#858586</color>
+    <color name="base_black_02">#777777</color>
+
+    <color name="base_line">#e7e7e7</color>
+
+    <color name="day_list_item_per">#dfdfdf</color>
+    <color name="day_list_item_nor">#f6f6f6</color>
+
+    <color name="base_item_color">#6D6D6D</color>
+    <color name="base_item_color02">#A9A9A9</color>
+
+    <!-- 下拉刷新时，颜色值 -->
+    <color name="swiperefresh_color1">#ff00ddff</color>
+    <color name="swiperefresh_color2">#ffffbb33</color>
+    <color name="swiperefresh_color3">#ffff4444</color>
+    <color name="swiperefresh_color4">#ffaa66cc</color>
+
+
+    <color name="chage_nor">#FDC186</color>
+
+    <color name="pingjianor">#FC9694</color>
+    <color name="white">#FFFFFF</color>
+    <color name="cancelorder">#9C9E9C</color>
+
+    <color name="div_color">#55777777</color>
+    <color name="translucence">#808080</color>
+    <color name="htranslucence">#80808080</color>
+
+</resources>

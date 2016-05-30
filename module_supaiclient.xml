@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_supaiclient" default="compile.module.supaiclient">
+    <dirname file="${ant.file.module_supaiclient}" property="module.supaiclient.basedir" />
+
+    <property name="module.jdk.home.supaiclient" value="${project.jdk.home}" />
+    <property name="module.jdk.bin.supaiclient" value="${project.jdk.bin}" />
+    <property name="module.jdk.classpath.supaiclient" value="${project.jdk.classpath}" />
+
+    <property name="compiler.args.supaiclient"
+        value="-encoding UTF-8 -source 1.7 ${compiler.args}" />
+
+    <property name="supaiclient.output.dir"
+        value="${module.supaiclient.basedir}/build/classes/production/supaiclient" />
+    <property name="supaiclient.testoutput.dir"
+        value="${module.supaiclient.basedir}/build/classes/test/supaiclient" />
+
+    <path id="supaiclient.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="supaiclient.module.production.classpath">
+        <path refid="${module.jdk.classpath.supaiclient}" />
+    </path>
+
+    <path id="supaiclient.runtime.production.module.classpath">
+        <pathelement location="${supaiclient.output.dir}" />
+    </path>
+
+    <path id="supaiclient.module.classpath">
+        <path refid="${module.jdk.classpath.supaiclient}" />
+        <pathelement location="${supaiclient.output.dir}" />
+    </path>
+
+    <path id="supaiclient.runtime.module.classpath">
+        <pathelement location="${supaiclient.testoutput.dir}" />
+        <pathelement location="${supaiclient.output.dir}" />
+    </path>
+
+
+    <patternset id="excluded.from.module.supaiclient">
+        <patternset refid="ignored.files" />
+    </patternset>
+
+    <patternset id="excluded.from.compilation.supaiclient">
+        <patternset refid="excluded.from.module.supaiclient" />
+    </patternset>
+
+
+    <target name="compile.module.supaiclient"
+        depends="compile.module.supaiclient.production,compile.module.supaiclient.tests"
+        description="Compile module supaiclient" />
+
+    <target name="compile.module.supaiclient.production" depends="register.custom.compilers"
+        description="Compile module supaiclient; production classes" />
+
+    <target name="compile.module.supaiclient.tests"
+        depends="register.custom.compilers,compile.module.supaiclient.production"
+        description="compile module supaiclient; test classes" unless="skip.tests" />
+
+    <target name="clean.module.supaiclient" description="cleanup module">
+        <delete dir="${supaiclient.output.dir}" />
+        <delete dir="${supaiclient.testoutput.dir}" />
+    </target>
+</project>

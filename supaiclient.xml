@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="supaiclient" default="all">
+
+
+    <property file="supaiclient.properties" />
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on" />
+    <property name="compiler.generate.no.warnings" value="off" />
+    <property name="compiler.args" value="" />
+    <property name="compiler.max.memory" value="700m" />
+    <patternset id="ignored.files">
+        <exclude name="**/*.hprof/**" />
+        <exclude name="**/*.pyc/**" />
+        <exclude name="**/*.pyo/**" />
+        <exclude name="**/*.rbc/**" />
+        <exclude name="**/*~/**" />
+        <exclude name="**/.DS_Store/**" />
+        <exclude name="**/.bundle/**" />
+        <exclude name="**/.git/**" />
+        <exclude name="**/.hg/**" />
+        <exclude name="**/.svn/**" />
+        <exclude name="**/.tox/**" />
+        <exclude name="**/CVS/**" />
+        <exclude name="**/RCS/**" />
+        <exclude name="**/SCCS/**" />
+        <exclude name="**/__pycache__/**" />
+        <exclude name="**/_svn/**" />
+        <exclude name="**/rcs/**" />
+        <exclude name="**/vssver.scc/**" />
+        <exclude name="**/vssver2.scc/**" />
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.zip" />
+        <include name="*.apk" />
+        <include name="*.war" />
+        <include name="*.egg" />
+        <include name="*.ear" />
+        <include name="*.ane" />
+        <include name="*.swc" />
+        <include name="*.jar" />
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java" />
+        <exclude name="**/?*.form" />
+        <exclude name="**/?*.class" />
+        <exclude name="**/?*.groovy" />
+        <exclude name="**/?*.scala" />
+        <exclude name="**/?*.flex" />
+        <exclude name="**/?*.kt" />
+        <exclude name="**/?*.clj" />
+        <exclude name="**/?*.aj" />
+    </patternset>
+
+    <!-- JDK definitions -->
+
+    <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin" />
+    <path id="jdk.classpath.1.8">
+        <fileset dir="${jdk.home.1.8}">
+            <include name="jre/lib/charsets.jar" />
+            <include name="jre/lib/deploy.jar" />
+            <include name="jre/lib/javaws.jar" />
+            <include name="jre/lib/jce.jar" />
+            <include name="jre/lib/jfr.jar" />
+            <include name="jre/lib/jfxswt.jar" />
+            <include name="jre/lib/jsse.jar" />
+            <include name="jre/lib/management-agent.jar" />
+            <include name="jre/lib/plugin.jar" />
+            <include name="jre/lib/resources.jar" />
+            <include name="jre/lib/rt.jar" />
+            <include name="jre/lib/ext/access-bridge-64.jar" />
+            <include name="jre/lib/ext/cldrdata.jar" />
+            <include name="jre/lib/ext/dnsns.jar" />
+            <include name="jre/lib/ext/jaccess.jar" />
+            <include name="jre/lib/ext/jfxrt.jar" />
+            <include name="jre/lib/ext/localedata.jar" />
+            <include name="jre/lib/ext/nashorn.jar" />
+            <include name="jre/lib/ext/sunec.jar" />
+            <include name="jre/lib/ext/sunjce_provider.jar" />
+            <include name="jre/lib/ext/sunmscapi.jar" />
+            <include name="jre/lib/ext/sunpkcs11.jar" />
+            <include name="jre/lib/ext/zipfs.jar" />
+        </fileset>
+    </path>
+
+    <property name="project.jdk.home" value="${jdk.home.1.8}" />
+    <property name="project.jdk.bin" value="${jdk.bin.1.8}" />
+    <property name="project.jdk.classpath" value="jdk.classpath.1.8" />
+
+
+    <!-- Project Libraries -->
+
+    <path id="library.alipaysdk-20151215.classpath">
+        <pathelement location="${basedir}/app/libs/alipaySdk-20151215.jar" />
+    </path>
+
+    <path id="library.android-async-http-1.4.9.classpath">
+        <pathelement
+            location="C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/com.loopj.android/android-async-http/1.4.9/386a4339ffe52d5d63e80f9bed8d2b1d1a418249/android-async-http-1.4.9.jar" />
+    </path>
+
+    <path id="library.appcompat-v7-23.1.1.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar" />
+    </path>
+
+    <path id="library.autolayout-1.3.4.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.zhy/autolayout/1.3.4/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.zhy/autolayout/1.3.4/jars/classes.jar" />
+    </path>
+
+    <path id="library.baidumapapi_base_v3_6_1.classpath">
+        <pathelement location="${basedir}/app/libs/baidumapapi_base_v3_6_1.jar" />
+    </path>
+
+    <path id="library.baidumapapi_cloud_v3_6_1.classpath">
+        <pathelement location="${basedir}/app/libs/baidumapapi_cloud_v3_6_1.jar" />
+    </path>
+
+    <path id="library.baidumapapi_map_v3_6_1.classpath">
+        <pathelement location="${basedir}/app/libs/baidumapapi_map_v3_6_1.jar" />
+    </path>
+
+    <path id="library.baidumapapi_radar_v3_6_1.classpath">
+        <pathelement location="${basedir}/app/libs/baidumapapi_radar_v3_6_1.jar" />
+    </path>
+
+    <path id="library.baidumapapi_search_v3_6_1.classpath">
+        <pathelement location="${basedir}/app/libs/baidumapapi_search_v3_6_1.jar" />
+    </path>
+
+    <path id="library.baidumapapi_util_v3_6_1.classpath">
+        <pathelement location="${basedir}/app/libs/baidumapapi_util_v3_6_1.jar" />
+    </path>
+
+    <path id="library.bolts-android-1.1.4.classpath">
+        <pathelement
+            location="C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-android/1.1.4/129874135e6081269ace2312092031558865de12/bolts-android-1.1.4.jar" />
+    </path>
+
+    <path id="library.butterknife-7.0.1.classpath">
+        <pathelement
+            location="C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar" />
+    </path>
+
+    <path id="library.design-23.1.1.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/jars/classes.jar" />
+    </path>
+
+    <path id="library.drawee-0.8.0.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.8.0/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.8.0/jars/classes.jar" />
+    </path>
+
+    <path id="library.fastjson-1.2.7.classpath">
+        <pathelement location="${basedir}/app/libs/fastjson-1.2.7.jar" />
+    </path>
+
+    <path id="library.fbcore-0.8.0.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.8.0/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.8.0/jars/classes.jar" />
+    </path>
+
+    <path id="library.fresco-0.8.0.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.8.0/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.8.0/jars/classes.jar" />
+    </path>
+
+    <path id="library.getuiext_2.0.2.classpath">
+        <pathelement location="${basedir}/app/libs/GetuiExt_2.0.2.jar" />
+    </path>
+
+    <path id="library.getuisdk-2.2.5.2.classpath">
+        <pathelement location="${basedir}/app/libs/GetuiSdk-2.2.5.2.jar" />
+    </path>
+
+    <path id="library.httpclient-4.3.6.classpath">
+        <pathelement
+            location="C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/cz.msebera.android/httpclient/4.3.6/526a9f794eab830eae4f23a62c572878b3f491ab/httpclient-4.3.6.jar" />
+    </path>
+
+    <path id="library.httpclient-4.5.1.classpath">
+        <pathelement location="${basedir}/app/libs/httpclient-4.5.1.jar" />
+    </path>
+
+    <path id="library.httpcore-4.4.4.classpath">
+        <pathelement location="${basedir}/app/libs/httpcore-4.4.4.jar" />
+    </path>
+
+    <path id="library.imagepipeline-0.8.0.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.8.0/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.8.0/jars/classes.jar" />
+    </path>
+
+    <path id="library.kjframeforandroid_v2.245.classpath">
+        <pathelement location="${basedir}/app/libs/KJFrameForAndroid_v2.245.jar" />
+    </path>
+
+    <path id="library.libammsdk.classpath">
+        <pathelement location="${basedir}/app/libs/libammsdk.jar" />
+    </path>
+
+    <path id="library.library-1.1.3.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.baoyz.actionsheet/library/1.1.3/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.baoyz.actionsheet/library/1.1.3/jars/classes.jar" />
+    </path>
+
+    <path id="library.library-2.4.0.classpath">
+        <pathelement
+            location="C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar" />
+    </path>
+
+    <path id="library.locsdk_6.13.classpath">
+        <pathelement location="${basedir}/app/libs/locSDK_6.13.jar" />
+    </path>
+
+    <path id="library.material-ripple-1.0.2.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.balysv/material-ripple/1.0.2/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.balysv/material-ripple/1.0.2/jars/classes.jar" />
+    </path>
+
+    <path id="library.open_sdk_r5509_lite.classpath">
+        <pathelement location="${basedir}/app/libs/open_sdk_r5509_lite.jar" />
+    </path>
+
+    <path id="library.ormlite-android-4.49-snapshot.classpath">
+        <pathelement location="${basedir}/app/libs/ormlite-android-4.49-SNAPSHOT.jar" />
+    </path>
+
+    <path id="library.ormlite-core-4.49-snapshot.classpath">
+        <pathelement location="${basedir}/app/libs/ormlite-core-4.49-SNAPSHOT.jar" />
+    </path>
+
+    <path id="library.picasso-2.5.2.classpath">
+        <pathelement location="${basedir}/app/libs/picasso-2.5.2.jar" />
+    </path>
+
+    <path id="library.pinyin4j-2.5.0.classpath">
+        <pathelement location="${basedir}/app/libs/pinyin4j-2.5.0.jar" />
+    </path>
+
+    <path id="library.play-services-appindexing-8.1.0.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar" />
+    </path>
+
+    <path id="library.play-services-basement-8.1.0.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar" />
+    </path>
+
+    <path id="library.recyclerview-v7-23.1.1.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/jars/classes.jar" />
+    </path>
+
+    <path id="library.support-annotations-23.1.1.classpath">
+        <pathelement
+            location="${basedir}/../../sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar" />
+    </path>
+
+    <path id="library.support-v4-23.1.1.classpath">
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/res" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar" />
+        <pathelement
+            location="${basedir}/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar" />
+    </path>
+
+    <path id="library.umeng-analytics-v5.6.7.classpath">
+        <pathelement location="${basedir}/app/libs/umeng-analytics-v5.6.7.jar" />
+    </path>
+
+    <path id="library.umeng-update-v2.7.0.classpath">
+        <pathelement location="${basedir}/app/libs/umeng-update-v2.7.0.jar" />
+    </path>
+    <!-- Register Custom Compiler Taskdefs -->
+    <property name="javac2.home" value="${idea.home}/lib" />
+    <path id="javac2.classpath">
+        <pathelement location="${javac2.home}/javac2.jar" />
+        <pathelement location="${javac2.home}/jdom.jar" />
+        <pathelement location="${javac2.home}/asm-all.jar" />
+        <pathelement location="${javac2.home}/jgoodies-forms.jar" />
+    </path>
+    <target name="register.custom.compilers">
+        <taskdef name="javac2" classname="com.intellij.ant.Javac2"
+            classpathref="javac2.classpath" />
+        <taskdef name="instrumentIdeaExtensions"
+            classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath" />
+    </target>
+
+    <!-- Modules -->
+
+    <import file="${basedir}/app/module_app.xml" />
+
+    <import file="${basedir}/module_supaiclient.xml" />
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.app, clean.module.supaiclient"
+        description="cleanup all" />
+
+    <target name="build.modules"
+        depends="init, clean, compile.module.app, compile.module.supaiclient"
+        description="build all modules" />
+
+    <target name="all" depends="build.modules" description="build all" />
+</project>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/cb_jc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sp_submitorder_bg"
+        android:button="@null"
+        android:checked="true"
+        android:gravity="center"
+        android:text="只要机车"
+        android:textColor="@color/base_black_02"
+        android:textSize="@dimen/basesize02" />
+
+</LinearLayout>

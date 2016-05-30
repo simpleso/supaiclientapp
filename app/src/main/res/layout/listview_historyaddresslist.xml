@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="渝中区两路口某某路"
+        android:textColor="@color/base_black_01"
+        android:textSize="@dimen/basesize02" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="王晓明"
+            android:textColor="@color/base_black_01"
+            android:textSize="@dimen/basesize02" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@mipmap/iconfont_dianhua"
+            android:drawablePadding="10dp"
+            android:text="18723182922"
+            android:textColor="@color/base_black_01"
+            android:textSize="@dimen/basesize02" />
+
+    </LinearLayout>
+
+    <View
+        style="@style/baseline_width"
+        android:layout_marginTop="10dp" />
+</LinearLayout>

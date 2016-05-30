@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/icon_shou" />
+
+        <View
+            style="@style/baseline_height"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:id="@+id/tv_inputAddre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:hint="请输入收件人地址"
+            android:textColor="@color/base_black_01"
+            android:textColorHint="@color/htranslucence"
+            android:textSize="@dimen/basesize01" />
+    </LinearLayout>
+
+    <View
+        style="@style/baseline_width"
+        android:layout_marginLeft="10dp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前位置："
+            android:textColor="#404040"
+            android:textSize="@dimen/basesize02" />
+
+        <TextView
+            android:id="@+id/tv_indexaddar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:text="重庆市渝中区"
+            android:textColor="@color/base_black_01"
+            android:textSize="@dimen/basesize02" />
+
+        <TextView
+            android:id="@+id/tv_shiyong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sp_base_blue"
+            android:maxLines="1"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="使用"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/basesize02" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#D9D9DB" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:text="历史记录"
+        android:textColor="@color/base_black_01"
+        android:textSize="@dimen/basesize02"
+        android:visibility="gone" />
+
+    <View style="@style/baseline_width" />
+
+    <include layout="@layout/base_viewpage_fragment" />
+
+    <!--<TextView android:id="@+id/tv_showNotData"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="@color/base_black_01"-->
+    <!--android:textSize="@dimen/basesize03"-->
+    <!--android:maxLines="1"-->
+    <!--android:visibility="gone"-->
+    <!--android:layout_marginTop="100dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:text="暂时没有记录"/>-->
+
+    <!--<ListView android:id="@+id/listview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:listSelector="@android:color/transparent"-->
+    <!--android:divider="@android:color/transparent"/>-->
+
+</com.zhy.autolayout.AutoLinearLayout>

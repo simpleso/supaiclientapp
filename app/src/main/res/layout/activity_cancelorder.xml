@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_bianhao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="订单标号"
+                android:textColor="#6B656B"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="10dp"
+                android:background="@color/base_line" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="取消原因"
+                android:textColor="#5BA9FC"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_biede"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/sp_cancel_bg"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="我已经找到别的方式了"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/tv_taijiu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/sp_cancel_bg"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="配送员要太久时间"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_taishuai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/sp_cancel_bg"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="配送员太帅不想他辛苦了"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_chongxin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/sp_base_blue2"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="地址写错了重新下单"
+                android:textColor="@android:color/white"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/sp_cancel_bg"
+                android:gravity="left|top"
+                android:hint="其他原因"
+                android:lines="4"
+                android:maxLines="4"
+                android:textColorHint="#809C9E9C"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_over"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/cancelorder_bg"
+        android:text="取消订单"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+</LinearLayout>

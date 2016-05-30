@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/QAMaster/QAMaster.iml" filepath="$PROJECT_DIR$/QAMaster/QAMaster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/supaiclient.iml" filepath="$PROJECT_DIR$/supaiclient.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_camara"
+            android:icon="@mipmap/iconfont_fapiaoxinxi"
+            android:title="我的订单" />
+        <!--<item android:id="@+id/nav_gallery" android:icon="@mipmap/iconfont_lianxiren"-->
+        <!--android:title="寄件人管理" />-->
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@mipmap/iconfont_wodeyouhuiquan"
+            android:title="优惠券" />
+
+        <item
+            android:id="@+id/nav_fapiao"
+            android:icon="@mipmap/iconfont_pxdayinfapiao"
+            android:title="发票" />
+        <item
+            android:id="@+id/nav_manage2"
+            android:icon="@mipmap/iconfont_renminbi"
+            android:title="价格表" />
+
+        <item android:title="">
+            <menu>
+                <item
+                    android:id="@+id/nav_camara2"
+                    android:icon="@mipmap/iconfont_changjianwenti"
+                    android:title="常见问题" />
+                <item
+                    android:id="@+id/dd"
+                    android:icon="@mipmap/iconfont_yijianfankui"
+                    android:title="意见反馈" />
+                <item
+                    android:id="@+id/about"
+                    android:icon="@mipmap/iconfont_guanyuwomen"
+                    android:title="关于我们" />
+                >
+            </menu>
+        </item>
+    </group>
+    <item
+        android:id="@+id/tuichu"
+        android:title="退出登录" />
+
+</menu>

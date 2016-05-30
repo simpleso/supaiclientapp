@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <include layout="@layout/activity_main_content" />
+
+    <LinearLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" />
+
+    <!--
+        <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_gravity="start"
+           android:orientation="vertical">
+
+           <include
+               android:id="@+id/head"
+               layout="@layout/nav_header_main" />
+
+
+                  <android.support.design.widget.NavigationView-->
+    <!--android:id="@+id/nav_view"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:clickable="false"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:scrollbars="none"-->
+    <!--app:menu="@menu/activity_main" />
+
+<com.supaiclient.app.widget.CustomerScrollView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white">
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+android:orientation="vertical"
+android:padding="20dp">
+
+<LinearLayout
+android:id="@+id/nav_camara"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:src="@mipmap/iconfont_fapiaoxinxi" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="我的订单" />
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<LinearLayout
+android:id="@+id/nav_gallery"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+<LinearLayout
+    android:layout_width="100dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@mipmap/iconfont_lianxiren" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="寄件人管理" />
+</LinearLayout>
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color"
+android:visibility="gone" />
+
+<LinearLayout
+android:id="@+id/nav_slideshow"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_gravity="center_vertical"
+android:layout_marginLeft="10dp"
+android:orientation="horizontal"
+android:padding="15dp"
+android:visibility="gone">
+
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:src="@mipmap/iconfont_wodeyouhuiquan" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="优惠卷" />
+
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<LinearLayout
+android:id="@+id/nav_fapiao"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:src="@mipmap/iconfont_pxdayinfapiao" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="发票" />
+
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<LinearLayout
+android:id="@+id/nav_manage2"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:padding="2dp"
+    android:src="@mipmap/iconfont_renminbi" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="价格表" />
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<LinearLayout
+android:id="@+id/nav_camara2"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:src="@mipmap/iconfont_changjianwenti" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="常见问题" />
+
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<LinearLayout
+android:id="@+id/dd"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:src="@mipmap/iconfont_yijianfankui" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="意见反馈" />
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<LinearLayout
+android:id="@+id/about"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginLeft="10dp"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:padding="15dp">
+
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:src="@mipmap/iconfont_guanyuwomen" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:text="关于我们" />
+
+
+</LinearLayout>
+
+<TextView
+android:layout_width="match_parent"
+android:layout_height="1dp"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:background="@color/div_color" />
+
+<TextView
+android:id="@+id/tuichu"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_gravity="center"
+android:layout_margin="10dp"
+android:background="@drawable/btn_exit_bg"
+android:gravity="center"
+android:padding="10dp"
+android:text="退出登录"
+android:textColor="@color/white" />
+
+</LinearLayout>
+</com.supaiclient.app.widget.CustomerScrollView>
+
+
+</LinearLayout>
+
+-->
+
+</FrameLayout>
