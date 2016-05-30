@@ -23,7 +23,6 @@ import com.supaiclient.app.util.CustomExceptionHandler;
  */
 public class BaseApplication extends MultiDexApplication implements ComponentCallbacks2 {
 
-
     public static String lastToast = "";
     public static long lastToastTime;
     public static boolean isZFsucceed = false;
