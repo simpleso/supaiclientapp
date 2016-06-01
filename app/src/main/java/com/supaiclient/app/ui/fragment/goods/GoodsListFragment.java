@@ -66,7 +66,7 @@ public class GoodsListFragment extends BaseListFragment<GoodsBean> {
 
         if (goodsBean != null) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("goodsBean", goodsBean);
+            bundle.putSerializable("onumber", goodsBean.getOnumber());
             UIHelper.MyOrderHistoryFragment(getActivity(), bundle);
         }
     }

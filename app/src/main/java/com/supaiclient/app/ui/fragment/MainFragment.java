@@ -81,7 +81,6 @@ import butterknife.ButterKnife;
 public class MainFragment extends Fragment implements OnClickListener, GeocodeSearch.OnGeocodeSearchListener, LocationSource,
         AMapLocationListener {
 
-
     private static final String TAG = "MainFragment";
 
     private static float distance;//距离
@@ -158,7 +157,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             L.e("重新获取价格");
-            setDistance();
+            setDistance(peopleBean_sj, peopleBean_jj);
         }
     };
     private int currentPage = 1; //搜索第几页
@@ -482,7 +481,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         if (!TextUtils.isEmpty(showStr)) {
             tvQujianaddr.setText(showStr);
         }
-        setDistance();
+        setDistance(peopleBean_sj, peopleBean_jj);
     }
 
     // 显示 中心点地址  失败
@@ -790,7 +789,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                         view_lin2.setVisibility(View.VISIBLE);
                     }
 
-                    setDistance();
+                    setDistance(peopleBean_sj, peopleBean_jj);
                 }
             }
             String back = data.getStringExtra("data");
@@ -801,7 +800,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         }
     }
 
-    private void setDistance() {
+    private void setDistance(PeopleBean peopleBean_sj, PeopleBean peopleBean_jj) {
         if (peopleBean_sj == null) {
             return;
         }
@@ -1093,7 +1092,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         peopleBean_jj.setLat(mRegeocodeAddress.getPois().get(0).getLatLonPoint().getLatitude() + "");
         peopleBean_jj.setLng(mRegeocodeAddress.getPois().get(0).getLatLonPoint().getLongitude() + "");
 
-        setDistance();
+        setDistance(peopleBean_sj, peopleBean_jj);
     }
 
     @Override
@@ -1149,7 +1148,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
             mlocationClient.stopLocation();
             isFirest = false;
-            setDistance();
+            setDistance(peopleBean_sj, peopleBean_jj);
         }
 
         if (aMapLocation.getLatitude() <= 0 || aMapLocation.getLongitude() <= 0) {

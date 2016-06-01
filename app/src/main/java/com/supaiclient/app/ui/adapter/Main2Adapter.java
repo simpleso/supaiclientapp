@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import com.amap.api.services.core.LatLonPoint;
 import com.supaiclient.app.R;
 import com.supaiclient.app.bean.FindspmanBean;
 import com.supaiclient.app.ui.adapter.base.ListBaseAdapter;
+import com.supaiclient.app.ui.fragment.goods.WuJianActivity;
 import com.supaiclient.app.util.DistanceComputeUtil;
+import com.supaiclient.app.util.UIHelper;
 
 import org.kymjs.kjframe.KJBitmap;
 
@@ -117,7 +120,7 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        FindspmanBean findspmanBean = mDatas.get(position);
+        final FindspmanBean findspmanBean = mDatas.get(position);
 
         vh.tvNumber.setText(findspmanBean.getOnumber());
         vh.tvShoujiandz.setText(findspmanBean.getTadd());
@@ -129,7 +132,6 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
         //   需要修改
         vh.tvWeizhi.setText(getLocationAddress(Double.valueOf(findspmanBean.getCplat()),
                 Double.valueOf(findspmanBean.getCplng())));
-
 
         //服务器给地址 要修改
         String str = "E3:27:07:49:B7:29:46:F2:0A:7F:5D:16:66:2D:58:3E:BA:3A:41:07;com.supaiclient.app";
@@ -169,6 +171,26 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
                 dialPhoneNumber(context, findspmanBean.getSuphone());
             }
         });
+
+
+        vh.tv_ckweizhi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WuJianActivity.class);
+                intent.putExtra("onumber", findspmanBean.getOnumber());
+                context.startActivity(intent);
+            }
+        });
+
+        vh.tv_clxq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("onumber", findspmanBean.getOnumber());
+                UIHelper.MyOrderHistoryFragment(context, bundle);
+            }
+        });
+
         return convertView;
     }
 
@@ -188,6 +210,12 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
         TextView tvZdjuli;
         @Bind(R.id.tv_time)
         TextView tvTime;
+
+        @Bind(R.id.tv_ckweizhi)
+        TextView tv_ckweizhi;
+
+        @Bind(R.id.tv_clxq)
+        TextView tv_clxq;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

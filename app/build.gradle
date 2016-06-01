@@ -168,8 +168,8 @@ dependencies {
     compile 'com.github.snowdream.android.app:updater:1.0@aar'
     //   compile 'cn.trinea.android.common:trinea-android-common:4.2.15'
     // compile 'org.greenrobot:greendao-generator:2.2.0'
-    compile project(':QAMaster')
+    //compile project(':QAMaster')
 
-    //compile 'org.xutils:xutils:3.3.34'
+    compile 'org.xutils:xutils:3.3.34'
 
 }

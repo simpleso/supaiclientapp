@@ -28,6 +28,7 @@ import com.supaiclient.app.bean.FindspmanBean;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.ui.base.BaseActivity;
 import com.supaiclient.app.util.DistanceComputeUtil;
+import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.L;
 import com.supaiclient.app.util.Util;
 import com.tencent.connect.share.QQShare;
@@ -110,15 +111,15 @@ public class WuJianActivity extends BaseActivity {
 
         getSupportActionBar().hide();
 
-        final FindspmanBean findspmanBean = (FindspmanBean) getIntent().getSerializableExtra("findspmanBean");
+        final String onumber = getIntent().getStringExtra("onumber");
 
-        L.e(findspmanBean.toString());
+        L.e(onumber);
 
         showWaitDialog("请稍后...");
 
         //  L.e(findspmanBean.toString());
 
-        UserApi.getodloca(this, findspmanBean.getOnumber(), new RequestBasetListener() {
+        UserApi.getodloca(this, onumber, new RequestBasetListener() {
             @Override
             public void onSuccess(String responseStr) {
 
@@ -128,9 +129,12 @@ public class WuJianActivity extends BaseActivity {
                     JSONArray jsonArray = new JSONArray(responseStr);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if (findspmanBean.getOnumber().equals(jsonObject.getString("onumber"))) {
-                            findspmanBean.setCplat(jsonObject.getDouble("cplat") + "");
-                            findspmanBean.setCplng(jsonObject.getDouble("cplng") + "");
+                        if (onumber.equals(jsonObject.getString("onumber"))) {
+//                            findspmanBean.setCplat(jsonObject.getDouble("cplat") + "");
+//                            findspmanBean.setCplng(jsonObject.getDouble("cplng") + "");
+
+                            FindspmanBean findspmanBean = JSonUtils.toBean(FindspmanBean.class, jsonObject.toString());
+
                             initSView(findspmanBean);
                             //    L.e(findspmanBean.toString());
                             break;

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stretchpanel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.supaiclient.app.widget.FlowRadioGroup
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="电脑"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="冰箱"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="洗衣机"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="空调"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="电脑"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="冰箱"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="洗衣机"
+            android:textColor="#333333" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="电脑"
+            android:textColor="#333333"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="冰箱"
+            android:textColor="#333333"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="洗衣机"
+            android:textColor="#333333"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="空调"
+            android:textColor="#333333"
+
+            android:visibility="gone" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="电脑"
+            android:textColor="#333333"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="冰箱"
+            android:textColor="#333333"
+            android:visibility="gone" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/sp_chose_bg"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="洗衣机"
+            android:textColor="#333333"
+            android:visibility="gone" />
+
+    </com.supaiclient.app.widget.FlowRadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:text="V" />
+
+</LinearLayout>

@@ -13,7 +13,6 @@ import com.supaiclient.app.ui.activity.home.MainActivity;
 import com.supaiclient.app.ui.adapter.Main2Adapter;
 import com.supaiclient.app.ui.adapter.base.ListBaseAdapter;
 import com.supaiclient.app.ui.base.BaseListFragment;
-import com.supaiclient.app.ui.fragment.goods.WuJianActivity;
 import com.supaiclient.app.util.JSonUtils;
 
 import java.util.ArrayList;
@@ -98,6 +97,7 @@ public class Main2Fragment extends BaseListFragment<FindspmanBean> implements Ba
     @Override
     protected ArrayList<FindspmanBean> parseList(String json) throws Exception {
 
+        // L.e("Main2Fragment -->>"+json);
 
         arrayList = (ArrayList<FindspmanBean>) JSonUtils.toList(FindspmanBean.class, json);
 
@@ -131,12 +131,12 @@ public class Main2Fragment extends BaseListFragment<FindspmanBean> implements Ba
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        FindspmanBean findspmanBean = (FindspmanBean) adapterView.getAdapter().getItem(i);
-        if (findspmanBean != null) {
-            Intent intent = new Intent(getActivity(), WuJianActivity.class);
-            intent.putExtra("findspmanBean", findspmanBean);
-            startActivity(intent);
-        }
+//        FindspmanBean findspmanBean = (FindspmanBean) adapterView.getAdapter().getItem(i);
+//        if (findspmanBean != null) {
+//            Intent intent = new Intent(getActivity(), WuJianActivity.class);
+//            intent.putExtra("onumber", findspmanBean.getOnumber());
+//            startActivity(intent);
+//        }
     }
 
     @Override

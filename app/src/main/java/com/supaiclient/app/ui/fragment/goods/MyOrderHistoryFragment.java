@@ -12,14 +12,13 @@ import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
-import com.supaiclient.app.bean.GoodsBean;
 import com.supaiclient.app.bean.OrderHistoryBean;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.ui.activity.order.CancelOrderActivity;
 import com.supaiclient.app.ui.adapter.ViewPageFragmentAdapter;
-import com.supaiclient.app.ui.adapter.base.BaseAdapterHelper;
 import com.supaiclient.app.ui.base.BaseFragment;
 import com.supaiclient.app.util.JSonUtils;
+import com.supaiclient.app.util.L;
 import com.supaiclient.app.widget.PagerSlidingTabStrip;
 
 /**
@@ -32,13 +31,14 @@ public class MyOrderHistoryFragment extends BaseFragment implements View.OnClick
     protected ViewPager mViewPager;
     protected ViewPageFragmentAdapter mTabsAdapter;
 
-    protected GoodsBean goodsBean;
-    private BaseAdapterHelper title_right_tv;
+    private View view;
+    private String onumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_myorderhistory, null);
+        view = inflater.inflate(R.layout.activity_myorderhistory, null);
+        return view;
     }
 
     @Override
@@ -50,10 +50,17 @@ public class MyOrderHistoryFragment extends BaseFragment implements View.OnClick
 
         mTabsAdapter = new ViewPageFragmentAdapter(getChildFragmentManager(),
                 mTabStrip, mViewPager);
-        goodsBean = (GoodsBean) getArguments().getSerializable("goodsBean");
-        Bundle bundle = new Bundle();
-        bundle.putString("onumber", goodsBean.getOnumber());
 
+        onumber = getArguments().getString("onumber");
+
+        L.e(onumber + "------------");
+        initViews(onumber);
+    }
+
+    private void initViews(String onumber) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("onumber", onumber);
         view.findViewById(R.id.tv_left).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,14 +69,13 @@ public class MyOrderHistoryFragment extends BaseFragment implements View.OnClick
             }
         });
 
-
         TextView title_content_tv = (TextView) view.findViewById(R.id.title_content_tv);
         final TextView title_right_tv = (TextView) view.findViewById(R.id.title_right_tv);
         title_content_tv.setText("我的订单");
         title_right_tv.setOnClickListener(this);
 
         RequestParams params = new RequestParams();
-        params.put("onumber", goodsBean.getOnumber());
+        params.put("onumber", onumber);
 
         ApiHttpClient.postNotShow(getActivity(), UrlUtil.orderhistory, params, new RequestBasetListener() {
             @Override
@@ -99,7 +105,6 @@ public class MyOrderHistoryFragment extends BaseFragment implements View.OnClick
         mTabsAdapter.addTab("历史记录", "历史记录", HistoryFragment.class, bundle);
         mTabsAdapter.addTab("订单详情", "订单详情", DetailsFragment.class, bundle);
         mViewPager.setOffscreenPageLimit(1);
-
     }
 
     @Override
@@ -110,7 +115,7 @@ public class MyOrderHistoryFragment extends BaseFragment implements View.OnClick
             case R.id.title_right_tv:
 
                 Intent intent = new Intent(getActivity(), CancelOrderActivity.class);
-                intent.putExtra("onumber", goodsBean.getOnumber().toString());
+                intent.putExtra("onumber", onumber);
                 startActivityForResult(intent, 200);
 
                 break;

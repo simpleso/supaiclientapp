@@ -153,6 +153,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         TextView title_content_tv = (TextView) findViewById(R.id.title_content_tv);
         title_content_tv.setText("提交订单");
 
+//        setActionBarTitle("提交订单");
+
         findViewById(R.id.tv_left).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

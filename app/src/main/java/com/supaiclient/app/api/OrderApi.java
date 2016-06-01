@@ -182,4 +182,18 @@ public class OrderApi {
         ApiHttpClient.postNotShow(context, UrlUtil.getsenduser, params, requestBasetListener);
     }
 
+    /**
+     * 获取订单详情
+     *
+     * @param context
+     * @param requestBasetListener
+     */
+    public static final void getorderdetail(Context context, String onumber, RequestBasetListener
+            requestBasetListener) {
+
+        RequestParams params = new RequestParams();
+        params.put("onumber", onumber);
+        ApiHttpClient.postNotShow(context, UrlUtil.orderdetail, params, requestBasetListener);
+    }
+
 }
