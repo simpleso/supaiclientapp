@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.supaiclient.app.ui.adapter.base.ListBaseAdapter;
 import com.supaiclient.app.ui.fragment.goods.WuJianActivity;
 import com.supaiclient.app.util.DistanceComputeUtil;
 import com.supaiclient.app.util.UIHelper;
+import com.supaiclient.app.widget.MarqueeTextView;
 
 import org.kymjs.kjframe.KJBitmap;
 
@@ -73,21 +75,47 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
         return new LatLonPoint(gg_lat, gg_lon);
     }
 
+    public String getAddressByLatLng(double lat, double lng) {
+        String address = "";
+        Log.e("##########", "1###########" + lat + "1###########" + lng);
+        try {
+            Geocoder geoCoder = new Geocoder(context);
+
+            List<Address> addresses = geoCoder.getFromLocation(lat, lng, 5);
+            Log.e("##########", "2###########");
+            StringBuilder sb = new StringBuilder();
+
+            if (addresses.size() > 0) {
+                Address add = addresses.get(0);
+                Log.e("##########", "3###########");
+//                for (int i = 0; i < add.getMaxAddressLineIndex(); i++) {
+//                    sb.append(add.getAddressLine(i)).append("\n");
+//                    sb.append(add.getLocality()).append("\n");
+//                    sb.append(add.getPostalCode()).append("\n");
+//                    sb.append(add.getCountryName()).append("\n");
+//                }
+                address = add.getAddressLine(0);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return address;
+    }
+
+
     private String getLocationAddress(double latitude, double longitude) {
         String add = "";
-        Geocoder geoCoder = new Geocoder(context);
         try {
 
+            Geocoder geoCoder = new Geocoder(context);
             LatLonPoint mLatLonPoint = bd_decrypt(latitude, longitude);
             List<Address> addresses = geoCoder.getFromLocation(
                     mLatLonPoint.getLatitude(), mLatLonPoint.getLongitude(),
-                    3);
+                    10);
             if (addresses.size() > 0) {
 
 //                for (int i = 0; i < addresses.size(); i++) {
-//
 //                    L.e(addresses.get(i).toString());
-//
 //                }
 
                 Address address = addresses.get(0);
@@ -126,12 +154,15 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
         vh.tvShoujiandz.setText(findspmanBean.getTadd());
         vh.tvSfname.setText(findspmanBean.getSuname());
 
-        //L.e("----" + getLocationAddress(Double.valueOf(findspmanBean.getCplat()),
-        //       Double.valueOf(findspmanBean.getCplng())));
+//        L.e("----" + getAddressByLatLng(Double.valueOf(findspmanBean.getCplat()),
+//                Double.valueOf(findspmanBean.getCplng())));
 
         //   需要修改
-        vh.tvWeizhi.setText(getLocationAddress(Double.valueOf(findspmanBean.getCplat()),
-                Double.valueOf(findspmanBean.getCplng())));
+        String string = getAddressByLatLng(Double.valueOf(findspmanBean.getCplat()), Double.valueOf(findspmanBean.getCplng()));
+        if (TextUtils.isEmpty(string)) {
+            string = "没有获取到地址";
+        }
+        vh.tvWeizhi.setText(string);
 
         //服务器给地址 要修改
         String str = "E3:27:07:49:B7:29:46:F2:0A:7F:5D:16:66:2D:58:3E:BA:3A:41:07;com.supaiclient.app";
@@ -199,7 +230,7 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
         @Bind(R.id.iv)
         ImageView iv;
         @Bind(R.id.tv_weizhi)
-        TextView tvWeizhi;
+        MarqueeTextView tvWeizhi;
         @Bind(R.id.tv_number)
         TextView tvNumber;
         @Bind(R.id.tv_shoujiandz)

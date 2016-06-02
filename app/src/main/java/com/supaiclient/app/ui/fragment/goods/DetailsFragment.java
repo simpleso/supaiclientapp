@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -76,11 +76,11 @@ public class DetailsFragment extends BaseFragment {
     @Bind(R.id.iv_photo)
     ImageView ivPhoto;
     @Bind(R.id.cb_jc)
-    CheckBox cbJc;
+    RadioButton cbJc;
     @Bind(R.id.cb_mt)
-    CheckBox cbMt;
+    RadioButton cbMt;
     @Bind(R.id.cb_bx)
-    CheckBox cbBx;
+    RadioButton cbBx;
     @Bind(R.id.tv_gongli)
     TextView tvGongli;
     @Bind(R.id.seekBar)
@@ -122,6 +122,19 @@ public class DetailsFragment extends BaseFragment {
     @Bind(R.id.id_rl_add)
     RelativeLayout id_rl_add;
 
+    @Bind(R.id.view_height)
+    View viewHeight;
+    @Bind(R.id.tv_showyuyue)
+    TextView tvShowyuyue;
+
+    @Bind(R.id.tv_service)
+    TextView tv_service;
+    @Bind(R.id.el_service)
+    RelativeLayout el_service;
+    @Bind(R.id.lin_otherServise)
+    LinearLayout lin_otherServise;
+    @Bind(R.id.lin_goods_type)
+    LinearLayout lin_goods_type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -144,7 +157,6 @@ public class DetailsFragment extends BaseFragment {
         Re_jiai.setVisibility(View.GONE);
 
         String onumber = getArguments().getString("onumber");
-
 
         RequestParams params = new RequestParams();
         params.put("onumber", onumber);
@@ -198,6 +210,12 @@ public class DetailsFragment extends BaseFragment {
 
         if (orderDetailBean.getTaketype().equals("2")) {
             tvOrdertype.setText(DateUtils.timestampToDate(orderDetailBean.getTaketime()));
+            viewHeight.setVisibility(View.VISIBLE);
+            tvShowyuyue.setVisibility(View.VISIBLE);
+        } else if (orderDetailBean.getTaketype().endsWith("1")) {
+            tvShowyuyue.setVisibility(View.GONE);
+            viewHeight.setVisibility(View.GONE);
+            tvOrdertype.setText("立即取件");
         }
 
         if (TextUtils.isEmpty(orderDetailBean.getGimg())) {
@@ -218,12 +236,13 @@ public class DetailsFragment extends BaseFragment {
         cbMt.setEnabled(false);
         cbJc.setEnabled(false);
 
+        id_rl_add.setVisibility(View.GONE);
 
         if (orderDetailBean.getAddprice().equals("0.00")) {
-            id_rl_add.setVisibility(View.GONE);
+            el_service.setVisibility(View.GONE);
         } else {
-            id_rl_add.setVisibility(View.VISIBLE);
-            tvJiajian.setText("￥" + orderDetailBean.getAddprice());
+            el_service.setVisibility(View.VISIBLE);
+            tv_service.setText("￥" + orderDetailBean.getAddprice());
         }
 
         if (orderDetailBean.getCpstyle().equals("1")) {
@@ -283,6 +302,9 @@ public class DetailsFragment extends BaseFragment {
         tvQijia.setText("￥" + (Float.valueOf(orderDetailBean.getTotalprice()) - orderDetailBean.getNight()));
 
         //L.e(orderDetailBean.toString());
+
+        lin_otherServise.setVisibility(View.GONE);
+        lin_goods_type.setVisibility(View.GONE);
 
     }
 }

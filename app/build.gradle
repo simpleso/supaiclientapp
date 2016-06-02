@@ -153,7 +153,7 @@ dependencies {
     compile 'com.balysv:material-ripple:1.0.2'
     compile 'com.loopj.android:android-async-http:1.4.9'
     /*以下可以注释*/
-    // compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     //compile 'com.facebook.fresco:fresco:0.8.0+'
     //compile 'com.umeng.analytics:analytics:latest.integration'
     //字体

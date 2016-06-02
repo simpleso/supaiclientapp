@@ -10,36 +10,55 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.route.BusRouteResult;
+import com.amap.api.services.route.DriveRouteResult;
+import com.amap.api.services.route.RouteSearch;
+import com.amap.api.services.route.WalkRouteResult;
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
 import com.baoyz.actionsheet.ActionSheet;
 import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
+import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.OrderApi;
 import com.supaiclient.app.bean.OrderSubmitBean;
 import com.supaiclient.app.bean.PeopleBean;
+import com.supaiclient.app.bean.Price;
 import com.supaiclient.app.interf.OnBack;
 import com.supaiclient.app.interf.RequestBasetListener;
+import com.supaiclient.app.ui.adapter.base.BaseAdapterHelper;
+import com.supaiclient.app.ui.adapter.base.QuickAdapter;
 import com.supaiclient.app.ui.base.BaseActivity;
+import com.supaiclient.app.ui.base.TimeDialogActivity;
 import com.supaiclient.app.ui.fragment.MainFragment;
 import com.supaiclient.app.util.DateUtils;
 import com.supaiclient.app.util.FileUtils;
 import com.supaiclient.app.util.ImageUtils;
+import com.supaiclient.app.util.JSonUtils;
+import com.supaiclient.app.util.L;
 import com.supaiclient.app.util.PayUtil;
 import com.supaiclient.app.util.T;
 import com.supaiclient.app.util.UIHelper;
+
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,10 +66,15 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Target;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.supaiclient.app.R.id.tv_ordertype;
 
 /**
  * Created by Administrator on 2015/12/28.
@@ -60,12 +84,25 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+
+    private static final String TAG = "SubmitOrderActivity";
+
     @Bind(R.id.cb_jc)
-    CheckBox cbJc;
+    RadioButton cbJc;
     @Bind(R.id.cb_mt)
-    CheckBox cbMt;
+    RadioButton cbMt;
     @Bind(R.id.cb_bx)
-    CheckBox cbBx;
+    RadioButton cbBx;
+
+
+    @Bind(R.id.rb_jc)
+    RadioButton rbJc;
+    @Bind(R.id.rb_mt)
+    RadioButton rbMt;
+    @Bind(R.id.rb_bx)
+    RadioButton rbBx;
+
+
     @Bind(R.id.seekBar)
     SeekBar seekBar;
     @Bind(R.id.tv_jiajMoney)
@@ -94,7 +131,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     EditText etShouname;
     @Bind(R.id.et_shouphone)
     EditText etShouphone;
-    @Bind(R.id.tv_ordertype)
+    @Bind(tv_ordertype)
     TextView tvOrdertype;
     @Bind(R.id.et_ordername)
     TextView etOrdername;
@@ -124,14 +161,44 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     LinearLayout ll_jifenlayout;
     @Bind(R.id.ll_jifen)
     LinearLayout ll_jifen;
+
+    @Bind(R.id.view_height)
+    View viewHeight;
+    @Bind(R.id.tv_showyuyue)
+    TextView tvShowyuyue;
+    @Bind(R.id.sp_type)
+    Spinner sp_type;
+    @Bind(R.id.tv_service)
+    TextView tv_service;
+
+    @Bind(R.id.rg_otherServise)
+    RadioGroup rg_otherServise;
+    @Bind(R.id.rg_paisong)
+    RadioGroup rg_paisong;
+    List<Price> list;
     private Target target;
     private double yuanjia;// 原来的  价格
     private OrderSubmitBean osb;
     private int type;// 1: 寄件人 选择 联系人  2：收件人 选择 联系人
-    private double ou = 0;
     private String theLarge = "";
     private String theThumbnail = "";
     private double DiKou = 0;
+    private String taketime = "0";
+    private String price = "0";
+    private String night = "0";
+    private String points = "0";
+    private float percent = 0;
+    private String weight = "0";
+    private int distance = 0;
+    private double addPice = 0;
+    private double servise = 0;
+    private double goodstype = 0;
+    private PeopleBean peopleBean_sj; //收件人地址 对象
+    private PeopleBean peopleBean_jj; // 取件人 地址 对象
+    private PeopleBean peopleBean_dw; // 定位 地址 对象
+    private String city;
+    private int paisongtype = 0;
+    private int goodstypeposition;
 
     @Override
     protected int getLayoutId() {
@@ -167,19 +234,89 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
 //        setActionBarTitle("提交订单");
         osb = (OrderSubmitBean) getIntent().getSerializableExtra("orderSubmitBean");
+        peopleBean_dw = (PeopleBean) getIntent().getSerializableExtra("peopleBean_dw");
+        city = getIntent().getStringExtra("city");
 
+
+        peopleBean_jj = osb.getPeopleBean_jj();
+        peopleBean_sj = osb.getPeopleBean_sj();
         init();
+        showWaitDialog("请稍后...");
+        FinalHttp finalHttp = new FinalHttp();
+        finalHttp.post("https://raw.githubusercontent.com/simpleso/supaiclientapp/master/price", new AjaxCallBack<String>() {
+
+            @Override
+            public void onSuccess(String s) {
+                super.onSuccess(s);
+                Log.d(TAG, "onSuccess() called with: s = " + s);
+                list = JSonUtils.toList(Price.class, s);
+                List<String> strings = new ArrayList<>();
+
+                for (int i = 0; i < list.size(); i++) {
+                    strings.add(list.get(i).getName());
+                }
+
+                L.e(list.toString());
+
+                hideWaitDialog();
+
+                //  ArrayAdapter<String> adapter = new ArrayAdapter<>(SubmitOrderActivity.this, android.R.layout.simple_spinner_item, strings);
+
+                sp_type.setAdapter(new QuickAdapter<String>(SubmitOrderActivity.this, R.layout.spinner_item, strings) {
+                    @Override
+                    protected void convert(BaseAdapterHelper helper, String item) {
+                        helper.setText(R.id.tv_spinner, item);
+                    }
+                });
+
+                sp_type.setSelection(list.size() - 1);
+
+                //默认使用其他
+                goodstypeposition = list.size() - 1;
+
+                L.e(goodstypeposition + "11111111");
+
+
+                sumPrice();
+
+                sp_type.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        if (list.get(position) != null) {
+
+                            goodstype = list.get(position).getPrice();
+                            goodstypeposition = position;
+                        }
+
+                        sumPrice();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                hideWaitDialog();
+                T.s(R.string.networf_errot);
+                Log.d(TAG, "onFailure() called with: t = [" + t + "], errorNo = [" + errorNo + "], strMsg = [" + strMsg + "]");
+            }
+        });
+
+
     }
 
     private void init() {
 
         if (osb != null) {
 
-            PeopleBean peopleBean_jj = osb.getPeopleBean_jj();
-
             if (peopleBean_jj != null) {
                 tvQujianadd.setText(peopleBean_jj.getAdd());
-
 
                 String jiname = peopleBean_jj.getName();
                 if (!TextUtils.isEmpty(jiname)) {
@@ -191,8 +328,6 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                     etQuphone.setText(jiphone);
                 }
             }
-
-            PeopleBean peopleBean_sj = osb.getPeopleBean_sj();
 
             if (peopleBean_jj != null) {
 
@@ -206,7 +341,6 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 if (!TextUtils.isEmpty(quphone)) {
                     etShouphone.setText(quphone);
                 }
-
             }
 
             tv_gongjin.setText(osb.getWeight());
@@ -214,14 +348,22 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
             String taketype = osb.getTaketype();
             if (taketype.equals("1")) {
+
+                viewHeight.setVisibility(View.GONE);
+                tvShowyuyue.setVisibility(View.GONE);
                 tvOrdertype.setText("立即取件");
+
             } else {
+
+                viewHeight.setVisibility(View.VISIBLE);
+                tvShowyuyue.setVisibility(View.VISIBLE);
                 tvOrdertype.setText(DateUtils.timestampToDate(osb.getTaketime()));
             }
 
-            yuanjia = Double.parseDouble(osb.getAddprice());
+            tvOrdertype.setOnClickListener(this);
 
             DecimalFormat df = new DecimalFormat("############0.00");
+
 
             tv_zongjia.setText("￥" + df.format(yuanjia));
 
@@ -248,6 +390,16 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
             tv_qijia.setText("￥" + df.format(yuanjia - Double.valueOf(osb.getNightnight())));
 
+            //得到传递过来的数据
+            distance = Integer.valueOf(osb.getDistance());
+            night = osb.getNightnight();
+            taketime = osb.getTaketime();
+            //运价里包含了夜间家 所以减去
+            yuanjia = Double.valueOf(getIntent().getStringExtra("price")) - Double.valueOf(osb.getNightnight());
+            points = osb.getPoints();
+            percent = osb.getPercent();
+            weight = osb.getWeight();
+
         }
         seekBar.setMax(30);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -255,10 +407,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 tvJiajMoney.setText(progress + "");
-                tv_jiajian.setText("￥" + progress + "");
-                double ou = yuanjia + Double.parseDouble(progress + "") - DiKou * osb.getPercent();
-                DecimalFormat df = new DecimalFormat("############0.00");
-                tv_zongjia.setText("￥" + df.format(ou));
+                addPice = progress;
+                sumPrice();
             }
 
             @Override
@@ -279,9 +429,10 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 public void onSuccess(String responseStr) {
                     try {
                         JSONObject jsonObject = new JSONObject(responseStr);
-                        if (jsonObject.has("points"))
+                        if (jsonObject.has("points")) {
                             osb.setPoints(jsonObject.getString("points"));
-                        mSeekBar1.setMax(Integer.valueOf(osb.getPoints()));
+                            mSeekBar1.setMax(Integer.valueOf(osb.getPoints()));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -308,8 +459,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 DecimalFormat df = new DecimalFormat("############0.00");
                 tv_dikou.setText(df.format(progress * osb.getPercent()));
                 DiKou = seekBar.getProgress();
-                double ou = Double.valueOf(tvJiajMoney.getText().toString()) + yuanjia - Double.parseDouble((progress * osb.getPercent()) + "");
-                tv_zongjia.setText("￥" + df.format(ou));
+                sumPrice();
             }
 
             @Override
@@ -323,14 +473,68 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        cbJc.setOnCheckedChangeListener(this);
-        cbMt.setOnCheckedChangeListener(this);
-        cbBx.setOnCheckedChangeListener(this);
+
+        rg_otherServise.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                //右移一位 是应为布局中有TextView 影响到了下标
+                int index = group.indexOfChild(group.findViewById(checkedId)) >> 1; //就可以得到index
+
+                L.e(index + "==========");
+
+                switch (index) {
+
+                    case 0: {
+
+                        servise = yuanjia * 0.3;
+                    }
+                    break;
+                    case 1: {
+                        servise = 10;
+                    }
+                    break;
+                    case 2: {
+                        servise = 0;
+                    }
+                    break;
+                }
+
+                sumPrice();
+            }
+        });
+
+        rg_paisong.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //右移一位 是应为布局中有TextView 影响到了下标
+                int index = group.indexOfChild(group.findViewById(checkedId)) >> 1; //就可以得到index
+
+                L.e(index + "==========");
+
+                switch (index) {
+
+                    case 0: {
+
+                        paisongtype = 8;
+                    }
+                    break;
+                    case 1: {
+                        paisongtype = 0;
+                    }
+                    break;
+                    case 2: {
+                        paisongtype = 0;
+                    }
+                    break;
+                }
+
+                sumPrice();
+            }
+        });
 
         setOnClick();
     }
-
-
 /*
 *           etBeizhu.setCursorVisible(false);
             etOrdername.setCursorVisible(false);
@@ -350,6 +554,24 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         cbBx.setOnClickListener(this);
         cbJc.setOnClickListener(this);
         cbMt.setOnClickListener(this);
+
+        rbBx.setOnClickListener(this);
+        rbJc.setOnClickListener(this);
+        rbMt.setOnClickListener(this);
+
+
+        tvQujianadd.setOnClickListener(this);
+        tvJijianadd.setOnClickListener(this);
+
+
+        cbJc.setOnCheckedChangeListener(this);
+        cbMt.setOnCheckedChangeListener(this);
+        cbBx.setOnCheckedChangeListener(this);
+
+        rbJc.setOnCheckedChangeListener(this);
+        rbMt.setOnCheckedChangeListener(this);
+        rbBx.setOnCheckedChangeListener(this);
+
 
 //        etShouphone.setOnClickListener(this);
 //        etOrdername.setOnClickListener(this);
@@ -413,9 +635,10 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
                 //未加 加价 0418
 
-                //      osb.setAddprice(Double.valueOf(tvJiajMoney.getText().toString())+"");
+                //osb.setAddprice(Double.valueOf(tvJiajMoney.getText().toString())+"");
 
                 osb.setPoints(DiKou + "");
+                osb.setTaketime(taketime);
 
                 BaseApplication.getInstance().setIsCreatOrder(true);
 
@@ -456,6 +679,56 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.cb_jc:
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                break;
+
+
+            case R.id.rb_bx:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                break;
+            case R.id.rb_mt:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                break;
+            case R.id.rb_jc:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                break;
+
+
+            case R.id.tv_ordertype:
+
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                TimeDialogActivity.create(this).setListener(new TimeDialogActivity.BaseDialogListener() {
+                    @Override
+                    public void onClickBack(TimeDialogActivity actionSheet, long time) {
+
+                        if (time == 0) {// 立即 取件
+                            tvShowyuyue.setVisibility(View.GONE);
+                            viewHeight.setVisibility(View.GONE);
+                            taketime = "0";
+                            tvOrdertype.setText("立即取件");
+                            osb.setTaketype("1");
+                            getPrice();
+                            return;
+                        }
+
+                        viewHeight.setVisibility(View.VISIBLE);
+                        tvShowyuyue.setVisibility(View.VISIBLE);
+                        taketime = time + "";
+                        osb.setTaketype("2");
+                        tvOrdertype.setText(DateUtils.timestampToDate(time + ""));
+                        getPrice();
+                    }
+                }).show();
+
+                break;
+
+            case R.id.tv_qujianadd:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                UIHelper.openAddressHistory2(this, peopleBean_dw, city, 0, 300);
+                break;
+
+            case R.id.tv_jijianadd:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                UIHelper.openAddressHistory2(this, peopleBean_dw, city, 1, 300);
                 break;
 
 //            case R.id.et_zhuname:
@@ -570,8 +843,14 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             return false;
         }
         osb.setOname(orname);
-        osb.setAddprice(tvJiajMoney.getText().toString());
-        osb.setMessage(etBeizhu.getText().toString());
+
+        //移除第一个字符
+        String s = tv_service.getText().toString().substring(1, tv_service.getText().toString().length());
+
+        osb.setAddprice(Double.valueOf(tvJiajMoney.getText().toString())
+                + Double.valueOf(s) + "");
+
+        // osb.setMessage(etBeizhu.getText().toString());
 
         int max = 0;
         if (cbJc.isChecked()) {// 机车
@@ -625,6 +904,14 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
         osb.getPeopleBean_sj().setPhone(shouphone);
 
+        String str = etBeizhu.getText().toString();
+
+        //判断最后一个
+        if (goodstypeposition != (list.size() - 1)) {
+            str = "[ " + list.get(goodstypeposition).getName() + " ]  " + str;
+        }
+        osb.setMessage(str);
+
         return true;
     }
 
@@ -633,20 +920,22 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data != null) {
-            PeopleBean peopleBean = (PeopleBean) data.getSerializableExtra("peopleBean");
-            if (peopleBean != null) {
+        if (requestCode == 200) {
+            if (data != null) {
+                PeopleBean peopleBean = (PeopleBean) data.getSerializableExtra("peopleBean");
+                if (peopleBean != null) {
 
-                if (type == 1) {
-                    etQuphone.setText(peopleBean.getPhone());
-                    etQuphone.setSelection(peopleBean.getPhone().length());
-                    etQuname.setText(peopleBean.getName());
-                    etQuname.setSelection(peopleBean.getName().length());
-                } else {
-                    etShouphone.setText(peopleBean.getPhone());
-                    etShouphone.setSelection(peopleBean.getPhone().length());
-                    etShouname.setText(peopleBean.getName());
-                    etShouname.setSelection(peopleBean.getName().length());
+                    if (type == 1) {
+                        etQuphone.setText(peopleBean.getPhone());
+                        etQuphone.setSelection(peopleBean.getPhone().length());
+                        etQuname.setText(peopleBean.getName());
+                        etQuname.setSelection(peopleBean.getName().length());
+                    } else {
+                        etShouphone.setText(peopleBean.getPhone());
+                        etShouphone.setSelection(peopleBean.getPhone().length());
+                        etShouname.setText(peopleBean.getName());
+                        etShouname.setSelection(peopleBean.getName().length());
+                    }
                 }
             }
         }
@@ -813,8 +1102,157 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 }
             }
             break;
+
+            case 300: {
+
+                if (data != null) {
+
+                    PeopleBean peopleBean = (PeopleBean) data.getSerializableExtra("peopleBean");
+
+                    if (peopleBean != null) {
+                        int type = data.getIntExtra("type", 0);
+
+                        String add = peopleBean.getAdd();
+
+                        if (!TextUtils.isEmpty(add)) {// 确定的 地址
+
+                            if (type == 0) {
+
+                                tvQujianadd.setText(add);
+                                peopleBean_jj.setLat(peopleBean.getLat());
+                                peopleBean_jj.setLng(peopleBean.getLng());
+                                peopleBean_jj.setAdd(add);
+
+                                if (!TextUtils.isEmpty(peopleBean.getName())) {
+                                    etQuname.setText(peopleBean.getName());
+                                    peopleBean_jj.setName(peopleBean.getName());
+                                }
+                                if (!TextUtils.isEmpty(peopleBean.getPhone())) {
+                                    etQuphone.setText(peopleBean.getPhone());
+                                    peopleBean_jj.setPhone(peopleBean.getPhone());
+                                }
+                            } else if (type == 1) {
+
+                                tvJijianadd.setText(add);
+                                peopleBean_sj.setLat(peopleBean.getLat());
+                                peopleBean_sj.setLng(peopleBean.getLng());
+                                peopleBean_sj.setAdd(add);
+
+                                if (!TextUtils.isEmpty(peopleBean.getName())) {
+                                    etShouname.setText(peopleBean.getName());
+                                    peopleBean_sj.setName(peopleBean.getName());
+                                }
+                                if (!TextUtils.isEmpty(peopleBean.getPhone())) {
+                                    etShouphone.setText(peopleBean.getPhone());
+                                    peopleBean_sj.setPhone(peopleBean.getPhone());
+                                }
+                            }
+                            setDistance();
+                        }
+                    }
+                    String back = data.getStringExtra("data");
+                    if (!TextUtils.isEmpty(back)) {// 支付 返回
+
+                        L.d("你好 支付返回了");
+                    }
+                }
+            }
+            break;
         }
     }
+
+
+    //设置距离
+    public void setDistance() {
+        if (peopleBean_sj == null) {
+            return;
+        }
+        if (peopleBean_jj == null) {
+            return;
+        }
+        double douLasj = 0;
+        double douLnsj = 0;
+        double douLajj = 0;
+        double douLnjj = 0;
+
+        String strLatsj = peopleBean_sj.getLat();
+        if (!TextUtils.isEmpty(strLatsj)) {
+            douLasj = Double.parseDouble(strLatsj);
+        }
+
+        String strLntsj = peopleBean_sj.getLng();
+        if (!TextUtils.isEmpty(strLntsj)) {
+            douLnsj = Double.parseDouble(strLntsj);
+        }
+
+        String strLatJJ = peopleBean_jj.getLat();
+        if (!TextUtils.isEmpty(strLatJJ)) {
+            douLajj = Double.parseDouble(strLatJJ);
+        }
+        String strLntJj = peopleBean_jj.getLng();
+        if (!TextUtils.isEmpty(strLntJj)) {
+            douLnjj = Double.parseDouble(strLntJj);
+        }
+
+        final RouteSearch routeSearch = new RouteSearch(this);
+        RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(douLajj, douLnjj), new LatLonPoint(douLasj, douLnsj));
+
+        // fromAndTo包含路径规划的起点和终点，drivingMode表示驾车模式
+        // 第三个参数表示途经点（最多支持16个），第四个参数表示避让区域（最多支持32个），第五个参数表示避让道路
+        final RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, RouteSearch.DrivingShortDistance, null, null, "");
+        routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
+
+            @Override
+            public void onBusRouteSearched(BusRouteResult busRouteResult, int errorCode) {
+
+            }
+
+            @Override
+            public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int errorCode) {
+
+                //L.e("errorCode = " + errorCode);
+
+                if (driveRouteResult == null || errorCode != 1000) {
+
+                    T.s("连接超时，请检查网络");
+                    return;
+                }
+                int totalLine = driveRouteResult.getPaths().size();
+                L.e("共查询出" + totalLine + "条符合条件的线路");
+                float min = driveRouteResult.getPaths().get(0).getDistance();
+                float distan = 0;
+                for (int i = 0; i < totalLine; i++) {
+                    L.e("第" + i + "段距离为：" + driveRouteResult.getPaths().get(i).getDistance() + "m");
+                    distan += driveRouteResult.getPaths().get(i).getDistance();
+                    float tem = driveRouteResult.getPaths().get(i).getDistance();
+                    min = Math.min(min, tem);
+                }
+                distan = min;
+                if (distan == 0.0) {
+                    distan = 1;
+                }
+                double dou = distan / 1000 + 1;//千米
+                int jul = (int) (dou);// 默认 单位 为 分
+                if (jul < 1) {
+                    distan = 1;
+                }
+                distan = jul;
+                L.e("距离-------------" + distan + "km");
+                distance = (int) distan;
+                L.e(distance + "=================");
+                tv_gongli.setText(distance + "");
+                getPrice();
+            }
+
+            @Override
+            public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
+
+            }
+        });
+
+        routeSearch.calculateDriveRouteAsyn(query);
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -828,28 +1266,169 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
         switch (buttonView.getId()) {
             case R.id.cb_jc: {
-                if (isChecked)
+                if (isChecked) {
+                    paisongtype = 8;
                     cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                else
+                } else
                     cbJc.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
             }
             break;
 
             case R.id.cb_mt: {
-                if (isChecked)
+                if (isChecked) {
+                    paisongtype = 0;
                     cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                else
+                } else
                     cbMt.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
             }
             break;
 
             case R.id.cb_bx: {
-                if (isChecked)
+                if (isChecked) {
+                    paisongtype = 0;
                     cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                else
+                } else
                     cbBx.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
             }
             break;
+
+            case R.id.rb_jc: {
+                if (isChecked) {
+                    rbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+                } else
+                    rbJc.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+            }
+            break;
+
+            case R.id.rb_mt: {
+                if (isChecked) {
+                    rbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+                } else
+                    rbMt.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+            }
+            break;
+
+            case R.id.rb_bx: {
+                if (isChecked) {
+                    rbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+                } else
+                    rbBx.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+            }
+            break;
         }
+    }
+
+    //求和价格
+    private void sumPrice() {
+
+        DecimalFormat df = new DecimalFormat("############0.00");
+        if (night.equals("0")) {
+            rl_yejian.setVisibility(View.GONE);
+        } else {
+            rl_yejian.setVisibility(View.VISIBLE);
+
+            //夜间家
+            tv_yejianjia.setText("￥" + df.format(Double.valueOf(night)));
+        }
+
+        //加价
+        tv_jiajian.setText("￥" + (int) addPice + "");
+        //里程家
+        tv_qijia.setText(yuanjia + "元");
+
+        if (points.equals("0")) {
+            ll_jifen.setVisibility(View.GONE);
+        } else {
+            ll_jifen.setVisibility(View.VISIBLE);
+        }
+
+        tv_service.setText("￥" + df.format(servise + goodstype + paisongtype) + "");
+
+        osb.setDistance(distance + "");
+        osb.setTaketime(taketime);
+        osb.setNightnight(night);
+
+        osb.setAddprice(addPice + servise + goodstype + paisongtype + "");
+
+        double pic = Double.valueOf(night) + yuanjia - percent * DiKou + addPice + servise + goodstype + paisongtype;
+        //总价
+        tv_zongjia.setText("￥" + df.format(pic));
+
+    }
+
+    // 计算价格
+    private void getPrice() {
+
+        //判断 是否 开始计算价格
+        ApiHttpClient.cancelRequests(this);
+
+        BigDecimal big = new BigDecimal(distance);
+
+        double f1 = big.setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        L.d("距离---》" + f1 + "----重量" + weight + "----预约时间" + taketime);
+
+        //距离
+        OrderApi.sendordergetprice(this, weight + "", f1 + "", taketime + "", new RequestBasetListener() {
+            @Override
+            public void onSuccess(String responseStr) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(responseStr);
+
+                    //       L.e(responseStr);
+                    price = jsonObject.getString("price");
+                    night = jsonObject.getString("night");
+
+                    if (jsonObject.has("points"))
+                        points = jsonObject.getString("points");
+                    else {
+                        points = "0";
+                    }
+                    if (jsonObject.has("percent")) {
+                        percent = Float.valueOf(jsonObject.getString("percent"));
+                    } else {
+                        percent = 0;
+                    }
+//                    if (redbagBean != null) {
+//
+//                        isSet = true;
+//                        double dou0 = Double.parseDouble(night);
+//                        double dou1 = Double.parseDouble(redbagBean.getMoney());
+//                        double dou2 = Double.parseDouble(price);
+//                        double dou3 = dou2 - dou1 + dou0;
+//                        price = dou3 + "";
+//                    }
+                    //  tvShowmo.setText(price + "元");
+                    //  btnNext.setEnabled(true);
+
+                    L.e(price + "----------------");
+
+                    //包含夜间家 要减去
+                    yuanjia = Double.valueOf(price) - Double.valueOf(night);
+
+                    sumPrice();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode) {
+                //  tvShowmo.setText("网络错误");
+                btnNext.setEnabled(false);
+                Log.d(TAG, "onFailure() called with: " + "statusCode = [" + statusCode + "]");
+                // handler.obtainMessage(0).sendToTarget();
+            }
+
+            @Override
+            public void onSendError(int statusCode, String message) {
+                Log.d(TAG, "onSendError() called with: " + "statusCode = [" + statusCode + "], message = [" + message + "]");
+                //  tvShowmo.setText("网络错误");
+                //  btnNext.setEnabled(false);
+                //   handler.obtainMessage(0).sendToTarget();
+            }
+        });
     }
 }

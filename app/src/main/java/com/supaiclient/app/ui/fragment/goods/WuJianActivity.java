@@ -27,9 +27,9 @@ import com.supaiclient.app.api.UserApi;
 import com.supaiclient.app.bean.FindspmanBean;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.ui.base.BaseActivity;
-import com.supaiclient.app.util.DistanceComputeUtil;
 import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.L;
+import com.supaiclient.app.util.SuPaiUtil;
 import com.supaiclient.app.util.Util;
 import com.tencent.connect.share.QQShare;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
@@ -222,60 +222,69 @@ public class WuJianActivity extends BaseActivity {
         double dou3 = Double.parseDouble(findspmanBean.getTlat());
         double dou4 = Double.parseDouble(findspmanBean.getTlng());
 
-        double dis = DistanceComputeUtil.getDistance2(
-                dou1, dou2,
-                dou3, dou4
-        );
-        julizhongdian.setText(dis + "KM");
+//        double dis = DistanceComputeUtil.getDistance2(
+//                dou1, dou2,
+//                dou3, dou4
+//        );
 
-        int dd = (int) dis;
-        if (dd == 0) {
-            dd = 3;
-        } else {
-            dd = dd * 3;
-        }
-        daodashijan.setText(dd + "分钟后");
-
-        iv_right_title.setVisibility(View.VISIBLE);
-        titleRightTv.setVisibility(View.GONE);
-        iv_right_title.setImageResource(R.mipmap.iconfont_zuihouyibanfenxiang);
-        View view1 = LayoutInflater.from(this).inflate(R.layout.fragment_fenxbasedialog, null);
-        mPopupWindow = new PopupWindow(view1, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        mPopupWindow.setOutsideTouchable(false);
-        view1.findViewById(R.id.iv_qqfenx).setOnClickListener(new View.OnClickListener() {
+        //计算距离采用驾车距离 0602
+        new SuPaiUtil().getDistance(this, dou1, dou2, dou3, dou4, new SuPaiUtil.DistanceListener() {
             @Override
-            public void onClick(View v) {
+            public void distance(float distance) {
+                julizhongdian.setText(distance + "KM");
 
-                L.e("点击QQ");
-                QQshare(findspmanBean);
-                if (mPopupWindow != null) mPopupWindow.dismiss();
+                int dd = (int) distance;
+                if (dd == 0) {
+                    dd = 3;
+                } else {
+                    dd = dd * 3;
+                }
+                daodashijan.setText(dd + "分钟后");
+
+                iv_right_title.setVisibility(View.VISIBLE);
+                titleRightTv.setVisibility(View.GONE);
+                iv_right_title.setImageResource(R.mipmap.iconfont_zuihouyibanfenxiang);
+                View view1 = LayoutInflater.from(WuJianActivity.this).inflate(R.layout.fragment_fenxbasedialog, null);
+                mPopupWindow = new PopupWindow(view1, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                mPopupWindow.setOutsideTouchable(false);
+                view1.findViewById(R.id.iv_qqfenx).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        L.e("点击QQ");
+                        QQshare(findspmanBean);
+                        if (mPopupWindow != null) mPopupWindow.dismiss();
+                    }
+                });
+
+                view1.findViewById(R.id.iv_weixinfenx).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        L.e("点击微信");
+                        weixinFen(findspmanBean);
+                        if (mPopupWindow != null) mPopupWindow.dismiss();
+                    }
+                });
+
+                view1.findViewById(R.id.tv_ok).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mPopupWindow != null) mPopupWindow.dismiss();
+                    }
+                });
+
+                iv_right_title.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 转发
+                        mPopupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+                    }
+                });
             }
         });
 
-        view1.findViewById(R.id.iv_weixinfenx).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                L.e("点击微信");
-                weixinFen(findspmanBean);
-                if (mPopupWindow != null) mPopupWindow.dismiss();
-            }
-        });
-
-        view1.findViewById(R.id.tv_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mPopupWindow != null) mPopupWindow.dismiss();
-            }
-        });
-
-        iv_right_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 转发
-                mPopupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
-            }
-        });
     }
 
     private String buildTransaction(final String type) {

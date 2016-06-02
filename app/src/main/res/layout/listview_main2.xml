@@ -156,7 +156,7 @@
             style="@style/baseline_height"
             android:layout_marginLeft="10dp" />
 
-        <com.supaiclient.app.widget.MarqueeTextView
+        <TextView
             android:id="@+id/tv_shoujiandz"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

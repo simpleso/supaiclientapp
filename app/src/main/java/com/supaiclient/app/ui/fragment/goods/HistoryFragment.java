@@ -14,7 +14,6 @@ import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
-import com.supaiclient.app.bean.FindspmanBean;
 import com.supaiclient.app.bean.OrderHistoryBean;
 import com.supaiclient.app.interf.OnBack;
 import com.supaiclient.app.interf.RequestBasetListener;
@@ -25,8 +24,6 @@ import com.supaiclient.app.util.PayUtil;
 import com.supaiclient.app.util.UIHelper;
 
 import org.kymjs.kjframe.KJBitmap;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -332,8 +329,13 @@ public class HistoryFragment extends BaseFragment {
     private void kuaidCx(OrderHistoryBean ohb) {
 
 
-        showWaitDialog("加载中..");
-        RequestParams params = new RequestParams();
+        // showWaitDialog("加载中..");
+
+        Intent intent = new Intent(getActivity(), WuJianActivity.class);
+        intent.putExtra("onumber", onumber);
+        startActivity(intent);
+
+    /*    RequestParams params = new RequestParams();
         params.put("onumber", onumber);
         ApiHttpClient.post(getActivity(), UrlUtil.orderodloca, params, new RequestBasetListener() {
             @Override
@@ -359,7 +361,7 @@ public class HistoryFragment extends BaseFragment {
             public void onSendError(int statusCode, String message) {
                 hideWaitDialog();
             }
-        });
+        });*/
 
     }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="proportion">
+
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+
+    </integer-array>
+
+    <array name="service">
+        <item>工牌不一致</item>
+        <item>取件速度慢</item>
+        <item>私自加价</item>
+        <item>服务态度差</item>
+        <item>物品有破损</item>
+        <item>派送超时</item>
+        <item>衣着不整</item>
+        <item>服务态度好</item>
+        <item>物品保护完整</item>
+        <item>取件及时</item>
+        <item>派送神速</item>
+        <item>长得养眼</item>
+    </array>
+
+    <integer-array name="service_pic">
+
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+
+    </integer-array>
+
+</resources>

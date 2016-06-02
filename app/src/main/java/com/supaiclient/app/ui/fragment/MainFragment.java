@@ -1,5 +1,6 @@
 package com.supaiclient.app.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ import com.supaiclient.app.ui.base.TimeDialogActivity;
 import com.supaiclient.app.util.DateUtils;
 import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.L;
+import com.supaiclient.app.util.SuPaiUtil;
 import com.supaiclient.app.util.T;
 import com.supaiclient.app.util.UIHelper;
 
@@ -160,6 +162,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
             setDistance(peopleBean_sj, peopleBean_jj);
         }
     };
+
     private int currentPage = 1; //搜索第几页
     private boolean isFirest = true;
     private boolean isSetUser = true;
@@ -594,11 +597,11 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
             case R.id.tv_qujianaddr:// 取件 地址 点击
 
-                UIHelper.openAddressHistory(this, peopleBean_dw, city, 0);
+                UIHelper.openAddressHistory(this, peopleBean_dw, city, 0, 200);
                 break;
             case R.id.tv_shoujianaddr:// 寄件人 地址
 
-                UIHelper.openAddressHistory(this, peopleBean_dw, city, 1);
+                UIHelper.openAddressHistory(this, peopleBean_dw, city, 1, 200);
                 break;
             case R.id.tv_dingwei_iv://回到 定位 远点
 
@@ -684,12 +687,19 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                         public void onBack() {
                             Intent intent2 = new Intent(getActivity(), SubmitOrderActivity.class);
                             intent2.putExtra("orderSubmitBean", osb);
+                            intent2.putExtra("peopleBean_dw", peopleBean_dw);
+                            intent2.putExtra("price", price);
+                            intent2.putExtra("city", city);
                             startActivityForResult(intent2, 200);
                         }
                     });
                 } else {
                     Intent intent2 = new Intent(getActivity(), SubmitOrderActivity.class);
                     intent2.putExtra("orderSubmitBean", osb);
+                    intent2.putExtra("peopleBean_dw", peopleBean_dw);
+                    intent2.putExtra("price", price);
+                    intent2.putExtra("price", price);
+                    intent2.putExtra("city", city);
                     startActivityForResult(intent2, 200);
                 }
                 break;
@@ -751,63 +761,64 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data != null) {
+        if (requestCode == 200) {
 
-            PeopleBean peopleBean = (PeopleBean) data.getSerializableExtra("peopleBean");
+            if (data != null) {
 
-            if (peopleBean != null) {
-                int type = data.getIntExtra("type", 0);
+                PeopleBean peopleBean = (PeopleBean) data.getSerializableExtra("peopleBean");
 
-                String add = peopleBean.getAdd();
+                if (peopleBean != null) {
+                    int type = data.getIntExtra("type", 0);
 
-                if (!TextUtils.isEmpty(add)) {// 确定的 地址
+                    String add = peopleBean.getAdd();
 
-                    BaseApplication.getInstance().setIsWxPay(false);
-                    BaseApplication.getInstance().setIsZFBPay(false);
+                    if (!TextUtils.isEmpty(add)) {// 确定的 地址
 
+                        BaseApplication.getInstance().setIsWxPay(false);
+                        BaseApplication.getInstance().setIsZFBPay(false);
 
-                    if (type == 0) {
-                        tvQujianaddr.setText(add);
-                        peopleBean_jj = peopleBean;
+                        if (type == 0) {
+                            tvQujianaddr.setText(add);
+                            peopleBean_jj = peopleBean;
 
-                        setSendUser(peopleBean_jj.getLat() + "", peopleBean_jj.getLng() + "");
+                            setSendUser(peopleBean_jj.getLat() + "", peopleBean_jj.getLng() + "");
 
 //                       peopleBean_jj = peopleBean_dw;// 默认 收件 地址 为 定位 数据
-                        //20160418 触发了百度地图的改变 就会影响地图的搜索
+                            //20160418 触发了百度地图的改变 就会影响地图的搜索
 //                        LatLng la = new LatLng(Double.parseDouble(peopleBean_sj.getLat()), Double.parseDouble(peopleBean_sj.getLng()));
 //                        float f = baiduMap.getMaxZoomLevel();//19.0 最小比例尺
 //                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(la, f);//设置缩放比例
 //                        baiduMap.animateMapStatus(u);
 
-                    } else {
+                        } else {
 
-                        BaseApplication.getInstance().setIsCreatOrder(false);
-                        tvShoujianaddr.setText(add);
-                        peopleBean_sj = peopleBean;
-                        linShowJg.setVisibility(View.VISIBLE);
-                        lin_show2.setVisibility(View.VISIBLE);
-                        view_lin2.setVisibility(View.VISIBLE);
+                            BaseApplication.getInstance().setIsCreatOrder(false);
+                            tvShoujianaddr.setText(add);
+                            peopleBean_sj = peopleBean;
+                            linShowJg.setVisibility(View.VISIBLE);
+                            lin_show2.setVisibility(View.VISIBLE);
+                            view_lin2.setVisibility(View.VISIBLE);
+                        }
+
+                        setDistance(peopleBean_sj, peopleBean_jj);
                     }
-
-                    setDistance(peopleBean_sj, peopleBean_jj);
                 }
-            }
-            String back = data.getStringExtra("data");
-            if (!TextUtils.isEmpty(back)) {// 支付 返回
+                String back = data.getStringExtra("data");
+                if (!TextUtils.isEmpty(back)) {// 支付 返回
 
-                L.d("你好 支付返回了");
+                    L.d("你好 支付返回了");
+                }
             }
         }
     }
 
-    private void setDistance(PeopleBean peopleBean_sj, PeopleBean peopleBean_jj) {
+    public void getDistance(Context context, PeopleBean peopleBean_sj, PeopleBean peopleBean_jj, final DistanceListener listener) {
         if (peopleBean_sj == null) {
             return;
         }
         if (peopleBean_jj == null) {
             return;
         }
-
         double douLasj = 0;
         double douLnsj = 0;
         double douLajj = 0;
@@ -832,51 +843,12 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
             douLnjj = Double.parseDouble(strLntJj);
         }
 
-        aMap.clear();
-
-//        BitmapDescriptor bitmap1 = BitmapDescriptorFactory
-//                .fromResource(R.mipmap.qu);
-//
-//        OverlayOptions option1 = new MarkerOptions()
-//                .position(new LatLng(Double.parseDouble(peopleBean_jj.getLat()), Double.parseDouble(peopleBean_jj.getLng())))
-//                .icon(bitmap1);
-//        bmapView.getMap().addOverlay(option1);
-//
-//        BitmapDescriptor bitmap3 = BitmapDescriptorFactory
-//                .fromResource(R.mipmap.iconfont_dingwei);
-//
-////        BaseApplication.set("Latitude", peopleBean_dw.getLat());
-////        BaseApplication.set("Longitude", peopleBean_dw.getLng());
-////        BaseApplication.set("indexAddre", peopleBean_dw.getAdd());
-//
-//        OverlayOptions option3 = new MarkerOptions()
-//                .position(new LatLng(Double.parseDouble(BaseApplication.get("Latitude", "0")),
-//                        Double.parseDouble(BaseApplication.get("Longitude", "0"))))
-//                .icon(bitmap3);
-//        bmapView.getMap().addOverlay(option3);
-
-
-        BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.mipmap.icon_shou);
-
-        LatLng point = new LatLng(Double.parseDouble(peopleBean_sj.getLat()), Double.parseDouble(peopleBean_sj.getLng()));
-
-        MarkerOptions markerOption = new MarkerOptions()
-                .anchor(0.5f, 0.5f)
-                .position(point)
-                .icon(bitmap)
-                .draggable(true).period(50);
-
-        aMap.addMarker(markerOption);
-
-        // distance = DistanceComputeUtil.getDistance(douLasj, douLnsj, douLajj, douLnjj);
-
-        RouteSearch routeSearch = new RouteSearch(getActivity());
+        final RouteSearch routeSearch = new RouteSearch(context);
         RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(new LatLonPoint(douLajj, douLnjj), new LatLonPoint(douLasj, douLnsj));
 
         // fromAndTo包含路径规划的起点和终点，drivingMode表示驾车模式
         // 第三个参数表示途经点（最多支持16个），第四个参数表示避让区域（最多支持32个），第五个参数表示避让道路
-        RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, RouteSearch.DrivingShortDistance, null, null, "");
+        final RouteSearch.DriveRouteQuery query = new RouteSearch.DriveRouteQuery(fromAndTo, RouteSearch.DrivingShortDistance, null, null, "");
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
 
             @Override
@@ -901,6 +873,8 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
                 float min = driveRouteResult.getPaths().get(0).getDistance();
 
+                float distance = 0;
+
                 for (int i = 0; i < totalLine; i++) {
                     L.e("第" + i + "段距离为：" + driveRouteResult.getPaths().get(i).getDistance() + "m");
                     distance += driveRouteResult.getPaths().get(i).getDistance();
@@ -920,12 +894,12 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                 }
                 distance = jul;
 
-                L.e("距离" + distance + "km");
+                L.e("距离-------------" + distance + "km");
 
-                tvJuli.setText((int) distance + "km");
-                getPrice();
+                if (listener != null) {
+                    listener.distance(distance);
+                }
             }
-
 
             @Override
             public void onWalkRouteSearched(WalkRouteResult walkRouteResult, int i) {
@@ -936,8 +910,33 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         routeSearch.calculateDriveRouteAsyn(query);
     }
 
+    private void setDistance(final PeopleBean peopleBean_sj, PeopleBean peopleBean_jj) {
+
+        new SuPaiUtil().getDistance(getActivity(), peopleBean_sj, peopleBean_jj, new SuPaiUtil.DistanceListener() {
+            @Override
+            public void distance(float distan) {
+                aMap.clear();
+                BitmapDescriptor bitmap = BitmapDescriptorFactory
+                        .fromResource(R.mipmap.icon_shou);
+                LatLng point = new LatLng(Double.parseDouble(peopleBean_sj.getLat()), Double.parseDouble(peopleBean_sj.getLng()));
+                MarkerOptions markerOption = new MarkerOptions()
+                        .anchor(0.5f, 0.5f)
+                        .position(point)
+                        .icon(bitmap)
+                        .draggable(true).period(50);
+
+                aMap.addMarker(markerOption);
+                distance = (int) distan;
+                tvJuli.setText((int) distan + "公里");
+                L.e(distan + "1111111111111111111");
+                getPrice();
+            }
+        });
+    }
+
     // 计算价格
     private void getPrice() {
+
 
         //判断 是否 开始计算价格
         ApiHttpClient.cancelRequests(getActivity());
@@ -1168,7 +1167,6 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         }
     }
 
-
     @Override
     public void activate(OnLocationChangedListener listener) {
         mListener = listener;
@@ -1183,6 +1181,11 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
             mlocationClient.onDestroy();
         }
         mlocationClient = null;
+    }
+
+    public interface DistanceListener {
+
+        void distance(float distance);
     }
 
 }

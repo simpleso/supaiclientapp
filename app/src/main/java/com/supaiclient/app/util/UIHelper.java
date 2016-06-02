@@ -64,7 +64,7 @@ public class UIHelper {
      * @param context
      * @param type    0 :收件 地址；1：寄件 地址
      */
-    public static void openAddressHistory(Fragment context, PeopleBean peopleBean_dw, String city, int type) {
+    public static void openAddressHistory(Fragment context, PeopleBean peopleBean_dw, String city, int type, int reqCode) {
 
         Bundle bundle = new Bundle();
         bundle.putString("city", city);
@@ -73,7 +73,7 @@ public class UIHelper {
         Intent intent = new Intent(context.getActivity(), SimpleBackActivity.class);
         intent.putExtra(SimpleBackActivity.BUNDLE_KEY_ARGS, bundle);
         intent.putExtra(SimpleBackActivity.BUNDLE_KEY_PAGE, SimpleBackPage.OPENADDRESSHISTORY.getValue());
-        context.startActivityForResult(intent, 200);
+        context.startActivityForResult(intent, reqCode);
     }
 
 
@@ -83,14 +83,33 @@ public class UIHelper {
      * @param context
      * @param type    0 :收件 地址；1：寄件 地址
      */
-    public static void openIntegralFragment(Fragment context, PeopleBean peopleBean_dw, String city, int type) {
+    public static void openAddressHistory2(Activity context, PeopleBean peopleBean_dw, String city, int type, int reqCode) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("city", city);
+        bundle.putInt("type", type);
+        bundle.putSerializable("peopleBean_dw", peopleBean_dw);
+        Intent intent = new Intent(context, SimpleBackActivity.class);
+        intent.putExtra(SimpleBackActivity.BUNDLE_KEY_ARGS, bundle);
+        intent.putExtra(SimpleBackActivity.BUNDLE_KEY_PAGE, SimpleBackPage.OPENADDRESSHISTORY.getValue());
+        context.startActivityForResult(intent, reqCode);
+    }
+
+
+    /**
+     * 周围 地址 或 历史地址
+     *
+     * @param context
+     * @param type    0 :收件 地址；1：寄件 地址
+     */
+    public static void openIntegralFragment(Fragment context, PeopleBean peopleBean_dw, String city, int type, int reqCode) {
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("peopleBean_dw", peopleBean_dw);
         Intent intent = new Intent(context.getActivity(), SimpleBackActivity.class);
         intent.putExtra(SimpleBackActivity.BUNDLE_KEY_ARGS, bundle);
         intent.putExtra(SimpleBackActivity.BUNDLE_KEY_PAGE, SimpleBackPage.OPENADDRESSHISTORY.getValue());
-        context.startActivityForResult(intent, 200);
+        context.startActivityForResult(intent, reqCode);
     }
 
 
