@@ -7,9 +7,11 @@ import android.os.Build;
 
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.util.L;
+
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,7 +30,7 @@ public class UserApi {
      */
     public static final void login(Context context, String username, String password, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("username", username);
         params.put("pwd", password);
         ApiHttpClient.post(context, UrlUtil.LOGIN, params, requestBasetListener);
@@ -44,7 +46,7 @@ public class UserApi {
      */
     public static final void getRightCode(Context context, String username, int have, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("phone", username);
         params.put("have", have + "");
         ApiHttpClient.post(context, UrlUtil.sendmsg, params, requestBasetListener);
@@ -59,7 +61,7 @@ public class UserApi {
      */
     public static final void orderSendmsg(Context context, String username, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("phone", username);
         ApiHttpClient.post(context, UrlUtil.ordersendmsg, params, requestBasetListener);
     }
@@ -73,7 +75,7 @@ public class UserApi {
      */
     public static final void sendFastlogin(Context context, String username, String code, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("phone", username);
         params.put("code", code);
         ApiHttpClient.post(context, UrlUtil.fastlogin, params, requestBasetListener);
@@ -89,7 +91,7 @@ public class UserApi {
      */
     public static final void register(Context context, String username, String code, String passwrd, String invitecode, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("username", username);
         params.put("pwd", passwrd);
         params.put("code", code);
@@ -105,7 +107,7 @@ public class UserApi {
      */
     public static final void UPPass(Context context, String username, String code, String passwrd, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("phone", username);
         params.put("newpwd", passwrd);
         params.put("code", code);
@@ -120,7 +122,7 @@ public class UserApi {
      */
     public static final void setPass(Context context, String password, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("username", password);
         ApiHttpClient.post(context, UrlUtil.LOGIN, params, requestBasetListener);
     }
@@ -134,7 +136,7 @@ public class UserApi {
      */
     public static final void viewAdd(Context context, String message, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("yjcontent", message);
         ApiHttpClient.post(context, UrlUtil.viewadd, params, requestBasetListener);
     }
@@ -147,7 +149,7 @@ public class UserApi {
      */
     public static final void problemlist(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.post(context, UrlUtil.problemlist, params, requestBasetListener);
     }
 
@@ -157,7 +159,7 @@ public class UserApi {
      */
     public static final void userGetinfo(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.postNotShow(context, UrlUtil.usergetinfo, params, requestBasetListener);
     }
 
@@ -166,7 +168,7 @@ public class UserApi {
      */
     public static final void userAddSendUser(Context context, String name, String phone, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("jname", name);
         params.put("jphone", phone);
         ApiHttpClient.postNotShow(context, UrlUtil.senduseradd, params, requestBasetListener);
@@ -177,8 +179,8 @@ public class UserApi {
      */
     public static final void userModifySendUser(Context context, int jid, String name, String phone, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
-        params.put("jid", jid);
+        HttpParams params = new HttpParams();
+        params.put("jid", jid + "");
         params.put("jname", name);
         params.put("jphone", phone);
         ApiHttpClient.postNotShow(context, UrlUtil.senduseradd, params, requestBasetListener);
@@ -189,8 +191,8 @@ public class UserApi {
      */
     public static final void userDelSendUser(Context context, int jid, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
-        params.put("jid", jid);
+        HttpParams params = new HttpParams();
+        params.put("jid", jid + "");
         ApiHttpClient.postNotShow(context, UrlUtil.senduserdel, params, requestBasetListener);
     }
 
@@ -199,7 +201,7 @@ public class UserApi {
      */
     public static final void userListSendUser(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.postNotShow(context, UrlUtil.senduserlist, params, requestBasetListener);
     }
 
@@ -210,7 +212,7 @@ public class UserApi {
 
     public static final void upHeader(final Activity context, final File file, final RequestBasetListener requestBasetListener) {
 
-        final RequestParams params = new RequestParams();
+        final HttpParams params = new HttpParams();
 
         //0425修改关于6.0系统的适配问题
 
@@ -220,7 +222,7 @@ public class UserApi {
                 public void onGranted() {
                     try {
                         params.put("guphoto", file);
-                    } catch (FileNotFoundException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         L.e("文件不存在");
                     }
@@ -236,7 +238,7 @@ public class UserApi {
         } else {
             try {
                 params.put("guphoto", file);
-            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 L.e("文件不存在");
             }
@@ -247,29 +249,29 @@ public class UserApi {
 
     public static final void ordersuinfo(Context context, String onumber, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
         ApiHttpClient.post(context, UrlUtil.ordersuinfo, params, requestBasetListener);
     }
 
     public static final void replay(Context context, String onumber, String star, String content, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
         params.put("star", star);
         params.put("content", content);
-        params.put("rplab1", 1);
-        params.put("rplab2", 1);
-        params.put("rplab3", 1);
-        params.put("rplab4", 1);
-        params.put("rplab5", 1);
-        params.put("rplab6", 1);
-        params.put("rplab7", 1);
-        params.put("rplab8", 1);
-        params.put("rplab9", 1);
-        params.put("rplab10", 1);
-        params.put("rplab11", 1);
-        params.put("rplab12", 1);
+        params.put("rplab1", 1 + "");
+        params.put("rplab2", 1 + "");
+        params.put("rplab3", 1 + "");
+        params.put("rplab4", 1 + "");
+        params.put("rplab5", 1 + "");
+        params.put("rplab6", 1 + "");
+        params.put("rplab7", 1 + "");
+        params.put("rplab8", 1 + "");
+        params.put("rplab9", 1 + "");
+        params.put("rplab10", 1 + "");
+        params.put("rplab11", 1 + "");
+        params.put("rplab12", 1 + "");
         ApiHttpClient.post(context, UrlUtil.replay, params, requestBasetListener);
     }
 
@@ -280,7 +282,7 @@ public class UserApi {
 
     public static final void getInviteCode(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.postNotShow(context, UrlUtil.invite, params, requestBasetListener);
     }
 
@@ -289,7 +291,7 @@ public class UserApi {
      */
     public static final void getPointList(Context context, String gltype, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("gltype", gltype);
         ApiHttpClient.postNotShow(context, UrlUtil.pointlist, params, requestBasetListener);
     }
@@ -299,7 +301,7 @@ public class UserApi {
      */
     public static final void getPointPnfo(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.postNotShow(context, UrlUtil.pointinfo, params, requestBasetListener);
     }
 
@@ -313,9 +315,9 @@ public class UserApi {
      */
     public static final void getMessageList(Context context, int start, int limit, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
-        params.put("pagesize", limit);
-        params.put("str", start + 1);
+        HttpParams params = new HttpParams();
+        params.put("pagesize", limit + "");
+        params.put("str", start + 1 + "");
         ApiHttpClient.postList(context, UrlUtil.messagelist, params, requestBasetListener);
     }
 
@@ -324,7 +326,7 @@ public class UserApi {
      */
     public static final void clientnum(Context context, String clientnum, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("clientnum", clientnum);
         ApiHttpClient.postNotShow(context, UrlUtil.clientnum, params, requestBasetListener);
     }
@@ -334,7 +336,7 @@ public class UserApi {
      */
     public static final void messageRead(Context context, String gmid, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("gmid", gmid);
         ApiHttpClient.postNotShow(context, UrlUtil.messageread, params, requestBasetListener);
     }
@@ -344,7 +346,7 @@ public class UserApi {
      */
     public static final void getversion(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.postNotShow(context, UrlUtil.getversion, params, requestBasetListener);
     }
 
@@ -354,7 +356,7 @@ public class UserApi {
      */
     public static final void getodloca(Context context, String onumber, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
         ApiHttpClient.postNotShow(context, UrlUtil.odloca, params, requestBasetListener);
     }

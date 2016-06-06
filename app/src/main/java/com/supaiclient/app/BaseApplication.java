@@ -11,11 +11,11 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.interf.OnLoginBackLinstener;
 import com.supaiclient.app.util.CustomExceptionHandler;
+
+import org.kymjs.kjframe.KJHttp;
 
 /**
  * 全局应用
@@ -185,12 +185,12 @@ public class BaseApplication extends MultiDexApplication implements ComponentCal
         //DataCleanManager.cleanInternalCache(this);
 
         // 初始化网络请求
-        AsyncHttpClient client = new AsyncHttpClient();
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-        client.setCookieStore(myCookieStore);
-        client.setMaxConnections(200000);
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
+//        client.setCookieStore(myCookieStore);
+//        client.setMaxConnections(200000);
 
-        ApiHttpClient.setHttpClient(client);
+        ApiHttpClient.setHttpClient(new KJHttp());
 
         //xUtils 的初始化
         // x.Ext.init(this);

@@ -95,7 +95,7 @@ public class AddressSelectActivity extends BaseActivity implements PoiSearch.OnP
                 Intent intent = new Intent(AddressSelectActivity.this, AddressHistoryFragment.class);
                 PeopleBean peopleBean = new PeopleBean();
 
-                peopleBean.setAdd(poiInfo.getCityName() + poiInfo.getAdName() + "(" + poiInfo.getSnippet() + ")");
+                peopleBean.setAdd(poiInfo.getTitle().replace("(", "").replace(")", "") + "(" + poiInfo.getSnippet() + ")");
                 peopleBean.setLat(poiInfo.getLatLonPoint().getLatitude() + "");
                 peopleBean.setLng(poiInfo.getLatLonPoint().getLongitude() + "");
 
@@ -118,7 +118,7 @@ public class AddressSelectActivity extends BaseActivity implements PoiSearch.OnP
             return;
         }
 
-        PoiSearch.Query query = new PoiSearch.Query(keyword, "", city != null ? city : "023");
+        PoiSearch.Query query = new PoiSearch.Query(keyword, "楼盘|商务住宅", city != null ? city : "023");
         // keyWord表示搜索字符串，
         //第二个参数表示POI搜索类型，二者选填其一，
         //POI搜索类型共分为以下20种：汽车服务|汽车销售|
@@ -173,7 +173,9 @@ public class AddressSelectActivity extends BaseActivity implements PoiSearch.OnP
 
 
                 helper.setText(R.id.tv_addas01, item.toString());
-                helper.setText(R.id.tv_addas, item.getCityName() + item.getAdName() + "(" + item.getSnippet() + ")");
+//                peopleBean.setAdd(pi.getTitle().replace("(", "").replace(")", "") + "(" + pi.getSnippet() + ")");
+//                helper.setText(R.id.tv_addas, item.getCityName() + item.getAdName() + "(" + item.getSnippet() + ")");
+                helper.setText(R.id.tv_addas, item.getTitle().replace("(", "").replace(")", "") + "(" + item.getSnippet() + ")");
             }
         });
         mAdapter.notifyDataSetChanged();

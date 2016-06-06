@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
@@ -21,6 +20,9 @@ import com.supaiclient.app.util.DateUtils;
 import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.PayUtil;
 import com.supaiclient.app.util.UIHelper;
+
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.util.ArrayList;
 
@@ -120,7 +122,7 @@ public class GoodsAdapter extends ListBaseAdapter<GoodsBean> {
             vh.tv_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RequestParams params = new RequestParams();
+                    HttpParams params = new HttpParams();
                     params.put("onumber", goodsBean.getOnumber());
                     ApiHttpClient.post(context, UrlUtil.orderodloca, params, new RequestBasetListener() {
                         @Override

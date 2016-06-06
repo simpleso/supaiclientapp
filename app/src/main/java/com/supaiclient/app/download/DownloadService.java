@@ -29,7 +29,6 @@ import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
 import com.supaiclient.app.util.PackageUtils;
 
-import org.apache.http.HttpStatus;
 
 import java.io.File;
 import java.io.IOException;
@@ -277,7 +276,7 @@ public class DownloadService extends Service {
                 connection.setRequestMethod("GET");
                 int length = -1;
 
-                if (connection.getResponseCode() == HttpStatus.SC_OK) {
+                if (connection.getResponseCode() == 200) {
                     length = connection.getContentLength();
                 }
 

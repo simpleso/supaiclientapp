@@ -11,6 +11,7 @@
     <dimen name="basesize02">16sp</dimen>
     <dimen name="basesize03">12sp</dimen>
     <dimen name="basesize04">14sp</dimen>
+    <dimen name="basesize05">10sp</dimen>
     <!--圆角 角度-->
     <dimen name="base_shape_radius">5dp</dimen>
     <dimen name="base_shop_title_name">15sp</dimen>

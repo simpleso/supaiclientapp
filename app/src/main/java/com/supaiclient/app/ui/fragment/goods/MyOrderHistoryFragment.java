@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
@@ -20,6 +19,9 @@ import com.supaiclient.app.ui.base.BaseFragment;
 import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.L;
 import com.supaiclient.app.widget.PagerSlidingTabStrip;
+
+import org.kymjs.kjframe.http.HttpParams;
+
 
 /**
  * Created by Administrator on 2016/3/14.
@@ -74,7 +76,7 @@ public class MyOrderHistoryFragment extends BaseFragment implements View.OnClick
         title_content_tv.setText("我的订单");
         title_right_tv.setOnClickListener(this);
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
 
         ApiHttpClient.postNotShow(getActivity(), UrlUtil.orderhistory, params, new RequestBasetListener() {

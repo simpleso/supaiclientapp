@@ -8,10 +8,12 @@ import android.text.TextUtils;
 
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.bean.OrderSubmitBean;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.util.L;
+
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,7 +33,7 @@ public class OrderApi {
      */
     public static final void sendordergetprice(Context context, String weight, String distance, String taketime, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("weight", weight);
         params.put("distance", distance);
         params.put("taketime", taketime);
@@ -47,16 +49,16 @@ public class OrderApi {
      */
     public static final void sendorderaddorder(final Context context, final OrderSubmitBean osb, final RequestBasetListener requestBasetListener) {
 
-        final RequestParams params = new RequestParams();
+        final HttpParams params = new HttpParams();
         params.put("oname", osb.getOname());
         params.put("weight", osb.getWeight());
         params.put("distance", osb.getDistance());
-        params.put("cpstyle", osb.getCpstyle());
+        params.put("cpstyle", osb.getCpstyle() + "");
         params.put("addprice", osb.getAddprice());
         params.put("taketype", osb.getTaketype());
         params.put("taketime", osb.getTaketime());
         params.put("message", osb.getMessage());
-        params.put("rid", osb.getRid());
+        params.put("rid", osb.getRid() + "");
         params.put("points", osb.getPoints());
 
 
@@ -68,7 +70,7 @@ public class OrderApi {
                     if (!TextUtils.isEmpty(osb.getgImg())) {
                         try {
                             params.put("gimg", new File(osb.getgImg()));
-                        } catch (FileNotFoundException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -83,7 +85,7 @@ public class OrderApi {
             if (!TextUtils.isEmpty(osb.getgImg())) {
                 try {
                     params.put("gimg", new File(osb.getgImg()));
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -113,7 +115,7 @@ public class OrderApi {
      */
     public static final void orderpayorder(Context context, String onumber, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
 
         ApiHttpClient.post(context, UrlUtil.orderpayorder, params, requestBasetListener);
@@ -127,7 +129,7 @@ public class OrderApi {
      */
     public static final void senduserlist(Context context, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.post(context, UrlUtil.senduserlist, params, requestBasetListener);
     }
 
@@ -140,9 +142,9 @@ public class OrderApi {
      */
     public static final void getOrderList(Context context, String type, int limit, int start, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
-        params.put("pagesize", limit);
-        params.put("str", start + 1);
+        HttpParams params = new HttpParams();
+        params.put("pagesize", limit + "");
+        params.put("str", start + 1 + "");
         params.put("status", type);
 
         ApiHttpClient.post(context, UrlUtil.orderlist, params, requestBasetListener);
@@ -158,9 +160,9 @@ public class OrderApi {
      */
     public static final void orderfindspman(Context context, int limit, int start, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
-        params.put("pagesize", limit);
-        params.put("str", start + 1);
+        HttpParams params = new HttpParams();
+        params.put("pagesize", limit + "");
+        params.put("str", start + 1 + "");
         ApiHttpClient.postNotShow(context, UrlUtil.orderfindspman, params, requestBasetListener);
     }
 
@@ -176,7 +178,7 @@ public class OrderApi {
     public static final void getsenduser(Context context, String lat, String lng, RequestBasetListener
             requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("lat", lat);
         params.put("lng", lng);
         ApiHttpClient.postNotShow(context, UrlUtil.getsenduser, params, requestBasetListener);
@@ -191,7 +193,7 @@ public class OrderApi {
     public static final void getorderdetail(Context context, String onumber, RequestBasetListener
             requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
         ApiHttpClient.postNotShow(context, UrlUtil.orderdetail, params, requestBasetListener);
     }

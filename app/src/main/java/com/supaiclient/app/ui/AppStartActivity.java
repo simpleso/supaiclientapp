@@ -8,7 +8,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.igexin.sdk.PushManager;
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
@@ -24,6 +23,8 @@ import com.supaiclient.app.util.UIHelper;
 import com.testin.agent.TestinAgent;
 import com.testin.agent.TestinAgentConfig;
 import com.umeng.analytics.MobclickAgent;
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -116,7 +117,7 @@ public class AppStartActivity extends Activity {
     // 自动 登录
     private void autoLogin() {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("uinfo", PropertyUtil.getUinfo());
 
         ApiHttpClient.postLogin(this, UrlUtil.LOGIN, params, new RequestBasetListener() {

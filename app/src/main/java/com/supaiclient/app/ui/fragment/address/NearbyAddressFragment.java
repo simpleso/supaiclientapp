@@ -52,7 +52,7 @@ public class NearbyAddressFragment extends BaseListFragment<PeopleBean> implemen
             if (peopleBean == null) {
 
                 //楼盘|商务住宅|公司企业
-                PoiSearch.Query query = new PoiSearch.Query("", "", city != null ? city : "023");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                PoiSearch.Query query = new PoiSearch.Query("", "楼盘|商务住宅", city != null ? city : "023");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
                 query.setPageSize(20);// 设置每页最多返回多少条poiitem
                 query.setPageNum(mCurrentPage);// 设置查第一页
                 PoiSearch poiSearch = new PoiSearch(getActivity(), query);
@@ -75,12 +75,12 @@ public class NearbyAddressFragment extends BaseListFragment<PeopleBean> implemen
                 //楼盘|商务住宅|公司企业
 
                 if (!TextUtils.isEmpty(lat) && !TextUtils.isEmpty(lag)) {
-                    PoiSearch.Query query = new PoiSearch.Query("", "", city != null ? city : "023");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+                    PoiSearch.Query query = new PoiSearch.Query("", "楼盘|商务住宅", city != null ? city : "023");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
                     query.setPageSize(20);// 设置每页最多返回多少条poiitem
                     query.setPageNum(mCurrentPage);// 设置查第一页
                     PoiSearch poiSearch = new PoiSearch(getActivity(), query);
                     poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(Double.valueOf(lat),
-                            Double.valueOf(lag)), 2000));//设置周边搜索的中心点以及区域
+                            Double.valueOf(lag)), 1000, true));//设置周边搜索的中心点以及区域
                     poiSearch.setOnPoiSearchListener(this);
                     poiSearch.searchPOIAsyn();
                 }
@@ -170,8 +170,8 @@ public class NearbyAddressFragment extends BaseListFragment<PeopleBean> implemen
 //                L.e("--15--" + pi.getDistance());
 
                 PeopleBean peopleBean = new PeopleBean();
-//                peopleBean.setAdd(pi.getTitle().replace("(", "").replace(")", "") + "(" + pi.getSnippet() + ")");
-                peopleBean.setAdd(pi.getSnippet());
+                peopleBean.setAdd(pi.getTitle().replace("(", "").replace(")", "") + "(" + pi.getSnippet() + ")");
+                // peopleBean.setAdd(pi.getSnippet());
                 peopleBean.setLat(pi.getLatLonPoint().getLatitude() + "");
                 peopleBean.setLng(pi.getLatLonPoint().getLongitude() + "");
 

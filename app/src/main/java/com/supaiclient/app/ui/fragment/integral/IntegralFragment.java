@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.UserApi;
-import com.supaiclient.app.bean.GoodsBean;
 import com.supaiclient.app.bean.IntegralBean;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.ui.adapter.base.BaseAdapterHelper;
@@ -128,9 +127,7 @@ public class IntegralFragment extends Fragment implements AdapterView.OnItemClic
         if (integralBean != null) {
             if (!TextUtils.isEmpty(integralBean.getGlonum())) {
                 Bundle bundle = new Bundle();
-                GoodsBean goodsBean = new GoodsBean();
-                goodsBean.setOnumber(integralBean.getGlonum());
-                bundle.putSerializable("goodsBean", goodsBean);
+                bundle.putSerializable("onumber", integralBean.getGlonum());
                 UIHelper.MyOrderHistoryFragment(getActivity(), bundle);
             }
         }

@@ -34,17 +34,18 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.amap.api.services.route.BusRouteResult;
 import com.amap.api.services.route.DriveRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkRouteResult;
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
@@ -68,6 +69,7 @@ import com.supaiclient.app.util.UIHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -148,8 +150,6 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
     private RedbagBean redbagBean;
 
-    private PoiSearch poiSearch;
-
     private boolean isSet = false;// 是否计算了 优惠
 
     Handler handler = new Handler() {
@@ -163,7 +163,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         }
     };
 
-    private int currentPage = 1; //搜索第几页
+    private int currentPage = 0; //搜索第几页
     private boolean isFirest = true;
     private boolean isSetUser = true;
     //定位相关
@@ -304,6 +304,9 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                 //设置是否允许模拟位置,默认为false，不允许模拟位置
                 mLocationOption.setMockEnable(false);
                 //设置定位参数
+                //GPS优先
+                mLocationOption.setGpsFirst(true);
+
                 mlocationClient.setLocationOption(mLocationOption);
                 // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
                 // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
@@ -454,7 +457,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
             @Override
             public void onCameraChangeFinish(CameraPosition cameraPosition) {
 
-                //L.e("cameraPosition = " + cameraPosition.toString());
+                L.e("cameraPosition = " + cameraPosition.toString());
 
                 if (!isFast) {
                     updateMapState(cameraPosition);
@@ -483,6 +486,8 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
     private void setShowAddr(String showStr) {
         if (!TextUtils.isEmpty(showStr)) {
             tvQujianaddr.setText(showStr);
+        } else {
+            T.s("地址为空");
         }
         setDistance(peopleBean_sj, peopleBean_jj);
     }
@@ -556,7 +561,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         redbagBean = null;
         lin_youhui.setVisibility(View.GONE);
         getPrice();
-        ApiHttpClient.postNotShow(getActivity(), UrlUtil.getred, new RequestParams(), new RequestBasetListener() {
+        ApiHttpClient.postNotShow(getActivity(), UrlUtil.getred, new HttpParams(), new RequestBasetListener() {
             @Override
             public void onSuccess(String responseStr) {
 
@@ -755,7 +760,6 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         }
     }
 
-    //计算 距离
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -939,7 +943,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
 
         //判断 是否 开始计算价格
-        ApiHttpClient.cancelRequests(getActivity());
+        ApiHttpClient.cancelRequests();
 
         BigDecimal big = new BigDecimal(distance);
 
@@ -1054,6 +1058,8 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
     @Override
     public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
 
+        L.e(regeocodeResult.toString());
+
         if (regeocodeResult == null || i != 1000) {
             setShowAddrError();
             return;
@@ -1061,37 +1067,34 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
         RegeocodeAddress mRegeocodeAddress = regeocodeResult.getRegeocodeAddress();
 
-//        L.e("1" + mRegeocodeAddress.getFormatAddress());
-//        L.e("2" + mRegeocodeAddress.getAdCode());
-//        L.e("3" + mRegeocodeAddress.getBuilding());
-//        L.e("4" + mRegeocodeAddress.getCity());
-//        L.e("5" + mRegeocodeAddress.getDistrict());
-//        L.e("6" + mRegeocodeAddress.getFormatAddress());
-//        L.e("7" + mRegeocodeAddress.getNeighborhood());
-//        L.e("8" + mRegeocodeAddress.getProvince());
-//        L.e("9" + mRegeocodeAddress.getTownship());
-//
-//        L.e(mRegeocodeAddress.getRoads().toString());
-//        L.e(mRegeocodeAddress.getBusinessAreas().toString());
-//        L.e(mRegeocodeAddress.getCrossroads().toString());
 
-        // if (mRegeocodeAddress.getAois().size() > 0)
-        {
+        L.e("1" + mRegeocodeAddress.getFormatAddress());
+        L.e("2" + mRegeocodeAddress.getAdCode());
+        L.e("3" + mRegeocodeAddress.getBuilding());
+        L.e("4" + mRegeocodeAddress.getCity());
+        L.e("5" + mRegeocodeAddress.getDistrict());
+        L.e("6" + mRegeocodeAddress.getFormatAddress());
+        L.e("7" + mRegeocodeAddress.getNeighborhood());
+        L.e("8" + mRegeocodeAddress.getProvince());
+        L.e("9" + mRegeocodeAddress.getTownship());
 
-            indexAddre = mRegeocodeAddress.getFormatAddress();
+       /* indexAddre = mRegeocodeAddress.getBuilding();
 
-//            indexAddre = mRegeocodeAddress.getAois().get(0).getAoiName().
-//                    replace("(", "").replace(")", "") + "(" + mRegeocodeAddress.getDistrict()
-//                    + mRegeocodeAddress.getTownship() + ")";
-            setShowAddr(TextUtils.isEmpty(indexAddre) ? "" : indexAddre);
+        if (!TextUtils.isEmpty(indexAddre)) {
+
+            setShowAddr(indexAddre);
+
+            //拖动回来完毕
+            peopleBean_jj.setAdd(indexAddre);
+            peopleBean_jj.setLat(mRegeocodeAddress.getPois().get(0).getLatLonPoint().getLatitude() + "");
+            peopleBean_jj.setLng(mRegeocodeAddress.getPois().get(0).getLatLonPoint().getLongitude() + "");
+
+            setDistance(peopleBean_sj, peopleBean_jj);
+
+        } else */{
+            serach(mRegeocodeAddress.getFormatAddress(),new LatLng(regeocodeResult.getRegeocodeQuery().getPoint().getLatitude(),
+                    regeocodeResult.getRegeocodeQuery().getPoint().getLongitude()), mRegeocodeAddress.getCityCode());
         }
-
-        //拖动回来完毕
-        peopleBean_jj.setAdd(TextUtils.isEmpty(indexAddre) ? "" : indexAddre);
-        peopleBean_jj.setLat(mRegeocodeAddress.getPois().get(0).getLatLonPoint().getLatitude() + "");
-        peopleBean_jj.setLng(mRegeocodeAddress.getPois().get(0).getLatLonPoint().getLongitude() + "");
-
-        setDistance(peopleBean_sj, peopleBean_jj);
     }
 
     @Override
@@ -1102,13 +1105,107 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         }
     }
 
+    private PoiSearch mPoiSearch;
+
+    private void serach(final String defAddr, final LatLng location, String cityCode) {
+
+        PoiSearch.Query query = new PoiSearch.Query("", "楼盘|商务住宅", cityCode);
+        Log.e(TAG, "serach() called with: location = [" + location + "], cityCode = [" + cityCode + "]");
+
+        query.setPageSize(10);// 设置每页最多返回多少条poiitem
+        query.setPageNum(currentPage);//设置查询页码
+
+        mPoiSearch = new PoiSearch(getActivity(), query);//初始化poiSearch对象
+
+        mPoiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(location.latitude,
+                location.longitude), 200, true));//设置周边搜索的中心点以及区域
+
+        mPoiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
+
+            @Override
+            public void onPoiSearched(PoiResult poiResult, int errorCode) {
+
+                L.e("errorCode = " + errorCode);
+
+                if (errorCode == 1000) {
+
+                    List<PoiItem> list = poiResult.getPois();
+                    L.e("PoiItem size = " + list.size());
+
+                    if (list.size() > 0) {
+
+                     //   peopleBean_jj.setAdd(list.get(0).getTitle());
+                        peopleBean_jj.setAdd(list.get(0).getTitle().replace("(", "").replace(")", "") + "(" + list.get(0).getSnippet() + ")");
+                        peopleBean_jj.setLat(list.get(0).getLatLonPoint().getLatitude() + "");
+                        peopleBean_jj.setLng(list.get(0).getLatLonPoint().getLongitude() + "");
+
+                    }
+                    //如果没有搜索到 怎么办？？？
+
+                    else {
+
+                        peopleBean_jj.setAdd(defAddr);
+                        peopleBean_jj.setLat(location.latitude + "");
+                        peopleBean_jj.setLng(location.longitude + "");
+                    }
+
+                    indexAddre = peopleBean_jj.getAdd();
+                    setShowAddr(indexAddre);
+
+                    for (PoiItem item : list) {
+
+                        L.e("convert = " + item.toString());
+                        L.e("--01--" + item.getCityName());
+                        L.e("--02--" + item.getDirection());
+                        L.e("--03--" + item.getAdCode());
+                        L.e("--04--" + item.getAdName());
+                        L.e("--05--" + item.getBusinessArea());
+                        L.e("--06--" + item.getCityCode());
+                        L.e("--07--" + item.getEmail());
+                        L.e("--08--" + item.getParkingType());
+                        L.e("--09--" + item.getPoiId());
+                        L.e("--10--" + item.getProvinceCode());
+                        L.e("--11--" + item.getProvinceName());
+                        L.e("--12--" + item.getSnippet());
+                        L.e("--13--" + item.getTitle());
+                        L.e("--14--" + item.getTypeDes());
+                        L.e("--15--" + item.getDistance());
+
+                        L.e(item.toString());
+                    }
+
+
+//                                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(la, f);//设置缩放比例
+//                                    if (baiduMap != null)
+//                                        baiduMap.animateMapStatus(u);
+
+//                    CameraUpdate mCameraUpdate = CameraUpdateFactory.newLatLngZoom(la, 17);
+//                    //   if (aMap != null)
+//                    aMap.animateCamera(mCameraUpdate);
+
+                    //  new LocationUtil(getActivity()).stop();
+                }
+            }
+
+            @Override
+            public void onPoiItemSearched(PoiItem poiItem, int errorCode) {
+
+                L.e("onPoiItemSearched", poiItem.getAdCode());
+
+            }
+        });//设置回调数据的监听器
+
+        mPoiSearch.searchPOIAsyn();//开始搜索
+    }
+
+
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
 
         L.d("定位完成");
         // 构造定位数据
 
-        //L.e("======" + aMapLocation.toString());
+        L.e("======" + aMapLocation.toString());
 
 
         if (isFirest) {
@@ -1122,7 +1219,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
             indexAddre = aMapLocation.getAddress();
 
-            setShowAddr(indexAddre);
+            //setShowAddr(indexAddre);
             //L.e("indexAddre = " + indexAddre);
             city = aMapLocation.getCityCode();
             peopleBean_dw = new PeopleBean();
@@ -1147,6 +1244,15 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
 
             mlocationClient.stopLocation();
             isFirest = false;
+            serach(aMapLocation.getAddress(),new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), city);
+
+//            aMap.clear();
+//            aMap.addMarker(new MarkerOptions()
+//                    .anchor(0.5f, 0.5f)
+//                    .icon(BitmapDescriptorFactory
+//                            .fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.point4)))
+//                    .position(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()))).showInfoWindow();
+
             setDistance(peopleBean_sj, peopleBean_jj);
         }
 

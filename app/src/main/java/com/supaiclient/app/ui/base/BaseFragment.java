@@ -52,7 +52,7 @@ public class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        ApiHttpClient.cancelRequests(getActivity());
+       ApiHttpClient.cancelRequests();
         super.onDestroy();
     }
 

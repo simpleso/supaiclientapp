@@ -4,9 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
 import com.supaiclient.app.bean.BaseResponseBodyBean;
@@ -19,72 +16,69 @@ import com.supaiclient.app.util.T;
 import com.supaiclient.app.util.UIHelper;
 
 import org.json.JSONObject;
+import org.kymjs.kjframe.KJHttp;
+import org.kymjs.kjframe.http.HttpCallBack;
+import org.kymjs.kjframe.http.HttpConfig;
+import org.kymjs.kjframe.http.HttpParams;
 
-import cz.msebera.android.httpclient.Header;
 
 public class ApiHttpClient {
 
     //    public static String API_URL = "http://192.168.1.200/sendspcr/public/index.php/Uapi";
     public static String API_URL = "http://120.27.150.115/spcr/public/index.php/Uapi";
     //    public static String API_URL = "http://http://120.27.150.115/Uapi";
-    public static AsyncHttpClient client;
-    private static String appCookie;
+    // public static FinalHttp client;
+    public static KJHttp client;
 
     public ApiHttpClient() {
+
     }
 
-    public static AsyncHttpClient getHttpClient() {
+    public static KJHttp getHttpClient() {
 
         if (client == null) {
 
-            client = new AsyncHttpClient();
+            client = new KJHttp();
         }
-        client.setTimeout(15000);
+        HttpConfig httpConfig = new HttpConfig();
+        httpConfig.cacheTime = 0;
+        client.setConfig(httpConfig);
+
         return client;
     }
 
-    public static void setHttpClient(AsyncHttpClient c) {
+    public static void setHttpClient(KJHttp c) {
         client = c;
     }
 
-    // 关闭当前 context 所有的 请求
-    public static void cancelRequests(Context context) {
-
-        if (client != null) {
-            client.cancelRequests(context, true);
-        }
-
+    public static void cancelRequests(){
+        client.cancelAll();
     }
 
-    // 关闭 所有请求
-    public static void cancelAllRequests() {
-        client.cancelAllRequests(true);
-    }
-
-    public static void postLogin(Context context, String partUrl, RequestParams params,
+    public static void postLogin(Context context, String partUrl, HttpParams params,
                                  final RequestBasetListener handler) {
         postSend(context, partUrl, true, false, params, handler);
     }
 
-    public static void post(Context context, String partUrl, RequestParams params,
+    public static void post(Context context, String partUrl, HttpParams params,
                             final RequestBasetListener handler) {
 
         postSend(context, partUrl, false, true, params, handler);
     }
 
-    public static void postNotShow(Context context, String partUrl, RequestParams params,
+    public static void postNotShow(Context context, String partUrl, HttpParams params,
                                    final RequestBasetListener handler) {
 
         postSend(context, partUrl, false, false, params, handler);
     }
 
-    public static void postList(Context context, String partUrl, RequestParams params,
+    public static void postList(Context context, String partUrl, HttpParams params,
                                 final RequestBasetListener handler) {
 
         postSend(context, partUrl, false, false, params, handler);
     }
 
-    public static void postSend(final Context context, String partUrl, final boolean islogin, final boolean isShowMessage, RequestParams params,
+    public static void postSend(final Context context, String partUrl, final boolean islogin, final boolean isShowMessage, HttpParams params,
                                 final RequestBasetListener handler) {
 
         if (!hasInternet(context)) {
@@ -94,14 +88,13 @@ public class ApiHttpClient {
         final String url = API_URL + partUrl;
         if (client == null) {
 
-            client = new AsyncHttpClient();
+            client = new KJHttp();
         }
         if (islogin == false) {
-            client.setTimeout(10000);
+           // client.getConfig().delayTime == 15000;
         } else {
 
-            client.setTimeout(5000);
-            client.setConnectTimeout(5000);
+            //client.configTimeout(5000);
         }
         params.put("type", "android");
 
@@ -109,15 +102,15 @@ public class ApiHttpClient {
 
             params.put("uinfo", PropertyUtil.getUinfo());
         }
-        params.put("version", BaseApplication.getVersionCode());
+        params.put("version", BaseApplication.getVersionCode() + "");
 
-        client.post(context, url, params, new AsyncHttpResponseHandler() {
+        client.post(url, params, new HttpCallBack() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(String responseBody) {
 
                 try {
-                    String reStr = new String(responseBody, "UTF-8");
+                    String reStr = new String(responseBody.getBytes(), "UTF-8");
 
                     L.d("responseBody = " + reStr);
 
@@ -193,47 +186,28 @@ public class ApiHttpClient {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.onFailure(statusCode);
+            public void onFailure(int errorNo, String strMsg) {
+                super.onFailure(errorNo, strMsg);
 
                 if (isShowMessage == true) {
 
                     T.s(R.string.networf_errot);
                 }
 
-                if (error != null) {
-                    log(url + "请求失败；》 statusCode = " + statusCode + "*****" + error.getMessage());
+                if (strMsg != null) {
+                    log(url + "请求失败；》 statusCode = " + errorNo + "*****" + strMsg);
                 }
             }
+            
         });
 
         log(new StringBuilder("post ").append(partUrl).toString());
-    }
-
-    public static String getApiUrl() {
-        return API_URL;
-    }
-
-    public static void setApiUrl(String apiUrl) {
-        API_URL = apiUrl;
     }
 
     public static void log(String log) {
         Log.d("BaseApi", log);
     }
 
-    //设置用户代理
-    public static void setUserAgent(String userAgent) {
-        client.setUserAgent(userAgent);
-    }
-
-    public static void setCookie(String cookie) {
-        client.addHeader("Cookie", cookie);
-    }
-
-    public static void cleanCookie() {
-        appCookie = "";
-    }
 
     // 检查 是否有 网络
     public static boolean hasInternet(Context context) {

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
@@ -23,7 +22,9 @@ import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.PayUtil;
 import com.supaiclient.app.util.UIHelper;
 
+
 import org.kymjs.kjframe.KJBitmap;
+import org.kymjs.kjframe.http.HttpParams;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +57,7 @@ public class HistoryFragment extends BaseFragment {
     private void setDate() {
 
         linContent.removeAllViews();
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
         ApiHttpClient.postNotShow(getActivity(), UrlUtil.orderhistory, params, new RequestBasetListener() {
             @Override

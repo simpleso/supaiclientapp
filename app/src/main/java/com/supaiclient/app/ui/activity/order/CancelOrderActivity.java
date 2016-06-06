@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
@@ -19,6 +18,7 @@ import com.supaiclient.app.ui.base.BaseActivity;
 import com.supaiclient.app.ui.fragment.goods.MyOrderHistoryFragment;
 
 import org.json.JSONObject;
+import org.kymjs.kjframe.http.HttpParams;
 
 import butterknife.Bind;
 import butterknife.BindColor;
@@ -80,7 +80,7 @@ public class CancelOrderActivity extends BaseActivity implements View.OnClickLis
                 }
 
                 showWaitDialog("提交中");
-                RequestParams params = new RequestParams();
+                HttpParams params = new HttpParams();
                 params.put("onumber", onumber);
                 params.put("rfcontent", yuany);
                 ApiHttpClient.postNotShow(CancelOrderActivity.this, UrlUtil.orderqxorder, params, new RequestBasetListener() {

@@ -119,7 +119,7 @@ public class BaseActivity extends AppCompatActivity implements WaitDialogControl
     protected void onDestroy() {
         super.onDestroy();
 
-        ApiHttpClient.cancelRequests(this);
+        ApiHttpClient.cancelRequests();
         ButterKnife.unbind(this);
     }
 
@@ -286,7 +286,7 @@ public class BaseActivity extends AppCompatActivity implements WaitDialogControl
                     if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 
                         L.d("加载旋转框关闭--关闭提示框--关闭网络");
-                        ApiHttpClient.getHttpClient().cancelRequests(BaseActivity.this, true);
+                       // ApiHttpClient.getHttpClient().cancelRequests(BaseActivity.this, true);
                         hideWaitDialog();
                     }
                     return false;

@@ -184,7 +184,7 @@ public class Main2Adapter extends ListBaseAdapter<FindspmanBean> {
                 dou1, dou2,
                 dou3, dou4
         );
-        vh.tvZdjuli.setText(dis + "KM");
+        vh.tvZdjuli.setText(dis + "km");
 
         int dd = (int) dis;
         if (dd == 0) {

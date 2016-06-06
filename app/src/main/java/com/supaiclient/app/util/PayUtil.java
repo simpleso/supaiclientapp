@@ -31,6 +31,8 @@ import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
@@ -48,9 +50,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
 /**
  * Created by Administrator on 2016/1/4.
@@ -224,7 +223,7 @@ public class PayUtil {
                     if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 
                         L.d("加载旋转框关闭--关闭提示框--关闭网络");
-                        ApiHttpClient.getHttpClient().cancelRequests(activity, true);
+                        //ApiHttpClient.getHttpClient().cancelRequests(activity, true);
                         hideWaitDialog();
                     }
                     return false;

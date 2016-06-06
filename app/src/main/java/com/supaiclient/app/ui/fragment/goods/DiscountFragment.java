@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
@@ -19,6 +18,9 @@ import com.supaiclient.app.ui.adapter.base.QuickAdapter;
 import com.supaiclient.app.ui.base.BaseFragment;
 import com.supaiclient.app.util.DateUtils;
 import com.supaiclient.app.util.JSonUtils;
+
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class DiscountFragment extends BaseFragment {
         showWaitDialog("加载中..");
 
         final String phone = PropertyUtil.getPhone();
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         ApiHttpClient.postList(getActivity(), UrlUtil.redbaggetared, params, new RequestBasetListener() {
             @Override
             public void onSuccess(String responseStr) {

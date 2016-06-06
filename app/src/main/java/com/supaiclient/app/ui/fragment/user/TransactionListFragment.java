@@ -1,6 +1,5 @@
 package com.supaiclient.app.ui.fragment.user;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
 import com.supaiclient.app.bean.InvoiceBean;
@@ -8,6 +7,9 @@ import com.supaiclient.app.ui.adapter.TransactionListAdapter;
 import com.supaiclient.app.ui.adapter.base.ListBaseAdapter;
 import com.supaiclient.app.ui.base.BaseListFragment;
 import com.supaiclient.app.util.JSonUtils;
+
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ public class TransactionListFragment extends BaseListFragment<InvoiceBean> {
     @Override
     protected void sendRequestData() {
 
-        ApiHttpClient.postNotShow(getActivity(), UrlUtil.invoicelog, new RequestParams(), requestBasetListener);
+        ApiHttpClient.postNotShow(getActivity(), UrlUtil.invoicelog, new HttpParams(), requestBasetListener);
     }
 
     @Override

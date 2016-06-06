@@ -48,7 +48,6 @@ public abstract class BaseListFragment<T extends BaseResponseBodyBean> extends B
 
     protected int mCurrentPage = 0;// 当前页
 
-
     protected int mStoreEmptyState = -1;// 错误状态码
     protected ListBaseAdapter<T> mAdapter;
     @Bind(R.id.baseList_head_lin)
@@ -249,7 +248,7 @@ public abstract class BaseListFragment<T extends BaseResponseBodyBean> extends B
         // 结束任务
 //        cancelReadCacheTask();
 //        cancelParserTask();
-        ApiHttpClient.cancelRequests(getActivity());
+        ApiHttpClient.cancelRequests();
         super.onDestroy();
     }
 

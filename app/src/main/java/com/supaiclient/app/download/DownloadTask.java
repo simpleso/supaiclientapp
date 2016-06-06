@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.apache.http.HttpStatus;
 
 import java.io.File;
 import java.io.InputStream;
@@ -119,7 +118,7 @@ public class DownloadTask {
                 mFinised += mThreadInfo.getFinished();
                 Log.i("mFinised", mThreadInfo.getId() + "finished = " + mThreadInfo.getFinished());
                 // ��ʼ����
-                if (connection.getResponseCode() == HttpStatus.SC_PARTIAL_CONTENT) {
+                if (connection.getResponseCode() == 206) {
                     inputStream = connection.getInputStream();
                     byte buf[] = new byte[1024 << 2];
                     int len = -1;

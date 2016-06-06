@@ -1,6 +1,5 @@
 package com.supaiclient.app.ui.fragment.goods;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,22 +11,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
 import com.supaiclient.app.bean.OrderDetailBean;
 import com.supaiclient.app.interf.RequestBasetListener;
+import com.supaiclient.app.ui.adapter.base.BaseAdapterHelper;
+import com.supaiclient.app.ui.adapter.base.QuickAdapter;
 import com.supaiclient.app.ui.base.BaseFragment;
 import com.supaiclient.app.util.DateUtils;
 import com.supaiclient.app.util.JSonUtils;
 
 import org.kymjs.kjframe.KJBitmap;
+import org.kymjs.kjframe.http.HttpParams;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,28 +70,28 @@ public class DetailsFragment extends BaseFragment {
     ImageView ivShoujianSe;
     @Bind(R.id.tv_ordertype)
     TextView tvOrdertype;
-    @Bind(R.id.et_ordername)
-    TextView etOrdername;
-    @Bind(R.id.et_zhuname)
-    EditText etZhuname;
+    //    @Bind(R.id.et_ordername)
+//    TextView etOrdername;
+//    @Bind(R.id.et_zhuname)
+//    EditText etZhuname;
     @Bind(R.id.et_beizhu)
     EditText etBeizhu;
     @Bind(R.id.iv_photo)
     ImageView ivPhoto;
-    @Bind(R.id.cb_jc)
-    RadioButton cbJc;
-    @Bind(R.id.cb_mt)
-    RadioButton cbMt;
-    @Bind(R.id.cb_bx)
-    RadioButton cbBx;
+    @Bind(R.id.cb_mo)
+    RadioButton cb_mo;
+    //    @Bind(R.id.cb_mt)
+//    RadioButton cbMt;
+    @Bind(R.id.cb_hc)
+    RadioButton cb_hc;
     @Bind(R.id.tv_gongli)
     TextView tvGongli;
-    @Bind(R.id.seekBar)
-    SeekBar seekBar;
-    @Bind(R.id.tv_gongjin)
-    TextView tvGongjin;
-    @Bind(R.id.tv_jiajMoney)
-    TextView tvJiajMoney;
+    //    @Bind(R.id.seekBar)
+//    SeekBar seekBar;
+    @Bind(R.id.et_gongjin)
+    EditText tvGongjin;
+    //    @Bind(R.id.tv_jiajMoney)
+//    TextView tvJiajMoney;
     @Bind(R.id.tv_qijia)
     TextView tvQijia;
     @Bind(R.id.tv_jiajian)
@@ -101,8 +104,8 @@ public class DetailsFragment extends BaseFragment {
     @Bind(R.id.lin_jiaotong)
     LinearLayout lin_jiaotong;
 
-    @Bind(R.id.Re_jiai)
-    RelativeLayout Re_jiai;
+//    @Bind(R.id.Re_jiai)
+//    RelativeLayout Re_jiai;
 
     @Bind(R.id.rl_yejian)
     RelativeLayout rl_yejian;
@@ -136,13 +139,35 @@ public class DetailsFragment extends BaseFragment {
     @Bind(R.id.lin_goods_type)
     LinearLayout lin_goods_type;
 
+    @Bind(R.id.ll_bootom)
+    LinearLayout ll_bootom;
+    @Bind(R.id.ll_addpic)
+    LinearLayout ll_addpic;
+    @Bind(R.id.ll_addgj)
+    LinearLayout ll_addgj;
+    @Bind(R.id.sp_type)
+    Spinner sp_type;
+    @Bind(R.id.tv_describe)
+    TextView tv_describe;
+
+    @Bind(R.id.llbeizu1)
+    LinearLayout llbeizu1;
+
+    @Bind(R.id.llbeizu2)
+    LinearLayout llbeizu2;
+
+    @Bind(R.id.llmiaoshu1)
+    LinearLayout llmiaoshu1;
+    @Bind(R.id.llmiaoshu2)
+    LinearLayout llmiaoshu2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_submitorder, null);
         ButterKnife.bind(this, view);
-        view.findViewById(R.id.lien).setVisibility(View.GONE);
-        view.findViewById(R.id.line2).setVisibility(View.GONE);
+//        view.findViewById(R.id.lien).setVisibility(View.GONE);
+//        view.findViewById(R.id.line2).setVisibility(View.GONE);
         init();
         return view;
     }
@@ -153,12 +178,12 @@ public class DetailsFragment extends BaseFragment {
         btnNext2.setVisibility(View.GONE);
         ivJijianSe.setVisibility(View.GONE);
         ivShoujianSe.setVisibility(View.GONE);
-        seekBar.setVisibility(View.GONE);
-        Re_jiai.setVisibility(View.GONE);
+//        seekBar.setVisibility(View.GONE);
+//        Re_jiai.setVisibility(View.GONE);
 
         String onumber = getArguments().getString("onumber");
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("onumber", onumber);
         ApiHttpClient.post(getActivity(), UrlUtil.orderdetail, params, new RequestBasetListener() {
             @Override
@@ -225,16 +250,19 @@ public class DetailsFragment extends BaseFragment {
             KJBitmap kjBitmap = new KJBitmap();
             kjBitmap.display(ivPhoto, orderDetailBean.getGimg());
         }
-        etZhuname.setText(orderDetailBean.getOname());
-        etZhuname.setEnabled(false);
+
+
+//        etZhuname.setText(orderDetailBean.getOname());
+//        etZhuname.setEnabled(false);
+
 
         etBeizhu.setText(orderDetailBean.getMessage());
         etBeizhu.setEnabled(false);
 //        lin_jiaotong.setVisibility(View.GONE);
 
-        cbBx.setEnabled(false);
-        cbMt.setEnabled(false);
-        cbJc.setEnabled(false);
+        cb_hc.setEnabled(false);
+        // cbMt.setEnabled(false);
+        cb_mo.setEnabled(false);
 
         id_rl_add.setVisibility(View.GONE);
 
@@ -245,47 +273,47 @@ public class DetailsFragment extends BaseFragment {
             tv_service.setText("￥" + orderDetailBean.getAddprice());
         }
 
-        if (orderDetailBean.getCpstyle().equals("1")) {
-            cbBx.setChecked(true);
-            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbMt.setChecked(false);
-            cbJc.setChecked(false);
-        } else if (orderDetailBean.getCpstyle().equals("2")) {
-            cbBx.setChecked(false);
-            cbMt.setChecked(true);
-            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbJc.setChecked(false);
-        } else if (orderDetailBean.getCpstyle().equals("3")) {
-            cbBx.setChecked(true);
-            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbMt.setChecked(true);
-            cbJc.setChecked(false);
-        } else if (orderDetailBean.getCpstyle().equals("4")) {
-            cbBx.setChecked(false);
-            cbMt.setChecked(false);
-            cbJc.setChecked(true);
-            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-        } else if (orderDetailBean.getCpstyle().equals("5")) {
-            cbBx.setChecked(true);
-            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbMt.setChecked(false);
-            cbJc.setChecked(true);
-            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-        } else if (orderDetailBean.getCpstyle().equals("6")) {
-            cbBx.setChecked(false);
-            cbMt.setChecked(true);
-            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbJc.setChecked(true);
-            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-        } else if (orderDetailBean.getCpstyle().equals("7")) {
-            cbBx.setChecked(true);
-            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbMt.setChecked(true);
-            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-            cbJc.setChecked(true);
-            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-        }
+//        if (orderDetailBean.getCpstyle().equals("1")) {
+//            cbBx.setChecked(true);
+//            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbMt.setChecked(false);
+//            cbJc.setChecked(false);
+//        } else if (orderDetailBean.getCpstyle().equals("2")) {
+//            cbBx.setChecked(false);
+//            cbMt.setChecked(true);
+//            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbJc.setChecked(false);
+//        } else if (orderDetailBean.getCpstyle().equals("3")) {
+//            cbBx.setChecked(true);
+//            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbMt.setChecked(true);
+//            cbJc.setChecked(false);
+//        } else if (orderDetailBean.getCpstyle().equals("4")) {
+//            cbBx.setChecked(false);
+//            cbMt.setChecked(false);
+//            cbJc.setChecked(true);
+//            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//        } else if (orderDetailBean.getCpstyle().equals("5")) {
+//            cbBx.setChecked(true);
+//            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbMt.setChecked(false);
+//            cbJc.setChecked(true);
+//            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//        } else if (orderDetailBean.getCpstyle().equals("6")) {
+//            cbBx.setChecked(false);
+//            cbMt.setChecked(true);
+//            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbJc.setChecked(true);
+//            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//        } else if (orderDetailBean.getCpstyle().equals("7")) {
+//            cbBx.setChecked(true);
+//            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbMt.setChecked(true);
+//            cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//            cbJc.setChecked(true);
+//            cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//        }
 
         if (orderDetailBean.getNight() == 0.0f) {
             rl_yejian.setVisibility(View.GONE);
@@ -304,7 +332,28 @@ public class DetailsFragment extends BaseFragment {
         //L.e(orderDetailBean.toString());
 
         lin_otherServise.setVisibility(View.GONE);
-        lin_goods_type.setVisibility(View.GONE);
 
+        ll_bootom.setVisibility(View.GONE);
+        ll_addpic.setVisibility(View.GONE);
+
+        List<String> strings = new ArrayList<>();
+        strings.add(orderDetailBean.getOname());
+
+        tv_describe.setVisibility(View.GONE);
+        llbeizu1.setVisibility(View.GONE);
+        llbeizu2.setVisibility(View.GONE);
+
+        llmiaoshu2.setVisibility(View.GONE);
+        llmiaoshu1.setVisibility(View.GONE);
+
+        ll_addgj.setVisibility(View.GONE);
+
+        sp_type.setEnabled(false);
+        sp_type.setAdapter(new QuickAdapter<String>(getActivity(), R.layout.spinner_item, strings) {
+            @Override
+            protected void convert(BaseAdapterHelper helper, String item) {
+                helper.setText(R.id.tv_spinner, item);
+            }
+        });
     }
 }

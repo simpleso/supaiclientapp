@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
@@ -17,6 +16,9 @@ import com.supaiclient.app.util.AppManager;
 import com.supaiclient.app.util.L;
 import com.supaiclient.app.util.T;
 import com.supaiclient.app.util.UIHelper;
+
+import org.kymjs.kjframe.http.HttpParams;
+
 
 /**
  * Created by Administrator on 2016/1/11.
@@ -86,7 +88,7 @@ public class GuideActivity extends Activity {
     // 自动 登录
     private void autoLogin() {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         params.put("uinfo", PropertyUtil.getUinfo());
 
         ApiHttpClient.postLogin(this, UrlUtil.LOGIN, params, new RequestBasetListener() {

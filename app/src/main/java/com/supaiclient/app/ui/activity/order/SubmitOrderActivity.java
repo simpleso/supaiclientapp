@@ -9,12 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,11 +60,10 @@ import com.supaiclient.app.util.PayUtil;
 import com.supaiclient.app.util.T;
 import com.supaiclient.app.util.UIHelper;
 
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.kymjs.kjframe.KJHttp;
+import org.kymjs.kjframe.http.HttpCallBack;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +76,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.supaiclient.app.R.id.et_jiajMoney;
 import static com.supaiclient.app.R.id.tv_ordertype;
 
 /**
@@ -87,26 +90,26 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
     private static final String TAG = "SubmitOrderActivity";
 
-    @Bind(R.id.cb_jc)
-    RadioButton cbJc;
-    @Bind(R.id.cb_mt)
-    RadioButton cbMt;
-    @Bind(R.id.cb_bx)
-    RadioButton cbBx;
+    @Bind(R.id.cb_mo)
+    RadioButton cb_mo;
+    //    @Bind(R.id.cb_mt)
+//    RadioButton cbMt;
+    @Bind(R.id.cb_hc)
+    RadioButton cb_hc;
 
 
     @Bind(R.id.rb_jc)
-    RadioButton rbJc;
+    CheckBox rbJc;
     @Bind(R.id.rb_mt)
-    RadioButton rbMt;
+    CheckBox rbMt;
     @Bind(R.id.rb_bx)
-    RadioButton rbBx;
+    CheckBox rbBx;
 
 
-    @Bind(R.id.seekBar)
-    SeekBar seekBar;
-    @Bind(R.id.tv_jiajMoney)
-    TextView tvJiajMoney;
+    //    @Bind(R.id.seekBar)
+//    SeekBar seekBar;
+    @Bind(et_jiajMoney)
+    EditText etJiajMoney;
     @Bind(R.id.tv_zongjia)
     TextView tv_zongjia;
     @Bind(R.id.tv_yejianjia)
@@ -133,18 +136,18 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     EditText etShouphone;
     @Bind(tv_ordertype)
     TextView tvOrdertype;
-    @Bind(R.id.et_ordername)
-    TextView etOrdername;
+    //    @Bind(R.id.et_ordername)
+//    TextView etOrdername;
     @Bind(R.id.et_beizhu)
     EditText etBeizhu;
-    @Bind(R.id.et_zhuname)
-    EditText etZhuname;
+    //    @Bind(R.id.et_zhuname)
+//    EditText etZhuname;
     @Bind(R.id.tv_jiajian)
     TextView tv_jiajian;
     @Bind(R.id.tv_qijia)
     TextView tv_qijia;
-    @Bind(R.id.tv_gongjin)
-    TextView tv_gongjin;
+    @Bind(R.id.et_gongjin)
+    EditText et_gongjin;
     @Bind(R.id.tv_gongli)
     TextView tv_gongli;
     @Bind(R.id.rl_yejian)
@@ -170,12 +173,49 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     Spinner sp_type;
     @Bind(R.id.tv_service)
     TextView tv_service;
+    @Bind(R.id.tv_describe)
+    TextView tv_describe;
+    @Bind(R.id.tv_zongjia1)
+    TextView tv_zongjia1;
 
-    @Bind(R.id.rg_otherServise)
-    RadioGroup rg_otherServise;
+    //    @Bind(R.id.rg_otherServise)
+//    RadioGroup rg_otherServise;
     @Bind(R.id.rg_paisong)
     RadioGroup rg_paisong;
+
+    @Bind(R.id.cb_cb1)
+    CheckBox cb_cb1;
+    @Bind(R.id.cb_cb2)
+    CheckBox cb_cb2;
+    @Bind(R.id.cb_cb3)
+    CheckBox cb_cb3;
+    @Bind(R.id.cb_cb4)
+    CheckBox cb_cb4;
+    @Bind(R.id.cb_cb5)
+    CheckBox cb_cb5;
+    @Bind(R.id.cb_cb6)
+    CheckBox cb_cb6;
+    @Bind(R.id.cb_cb7)
+    CheckBox cb_cb7;
+    @Bind(R.id.cb_cb8)
+    CheckBox cb_cb8;
+
+    @Bind(R.id.iv_gjjia)
+    ImageView iv_gjjia;
+    @Bind(R.id.iv_gjjian)
+    ImageView iv_gjjian;
+
+    @Bind(R.id.iv_jgjia)
+    ImageView iv_jgjia;
+    @Bind(R.id.iv_jgjian)
+    ImageView iv_jgjian;
+
+    @Bind(R.id.tv_pstype)
+    TextView tv_pstype;
+
     List<Price> list;
+
+
     private Target target;
     private double yuanjia;// 原来的  价格
     private OrderSubmitBean osb;
@@ -188,7 +228,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     private String night = "0";
     private String points = "0";
     private float percent = 0;
-    private String weight = "0";
+    private int weight = 0;
     private int distance = 0;
     private double addPice = 0;
     private double servise = 0;
@@ -237,19 +277,19 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         peopleBean_dw = (PeopleBean) getIntent().getSerializableExtra("peopleBean_dw");
         city = getIntent().getStringExtra("city");
 
-
         peopleBean_jj = osb.getPeopleBean_jj();
         peopleBean_sj = osb.getPeopleBean_sj();
         init();
         showWaitDialog("请稍后...");
-        FinalHttp finalHttp = new FinalHttp();
-        finalHttp.post("https://raw.githubusercontent.com/simpleso/supaiclientapp/master/price", new AjaxCallBack<String>() {
-
+        KJHttp kjHttp = new KJHttp();
+        kjHttp.get("https://raw.githubusercontent.com/simpleso/supaiclientapp/master/price", new HttpCallBack() {
             @Override
             public void onSuccess(String s) {
                 super.onSuccess(s);
+
                 Log.d(TAG, "onSuccess() called with: s = " + s);
                 list = JSonUtils.toList(Price.class, s);
+
                 List<String> strings = new ArrayList<>();
 
                 for (int i = 0; i < list.size(); i++) {
@@ -259,7 +299,6 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 L.e(list.toString());
 
                 hideWaitDialog();
-
                 //  ArrayAdapter<String> adapter = new ArrayAdapter<>(SubmitOrderActivity.this, android.R.layout.simple_spinner_item, strings);
 
                 sp_type.setAdapter(new QuickAdapter<String>(SubmitOrderActivity.this, R.layout.spinner_item, strings) {
@@ -274,8 +313,14 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 //默认使用其他
                 goodstypeposition = list.size() - 1;
 
-                L.e(goodstypeposition + "11111111");
+                String s1 = list.get(goodstypeposition).getDescribe();
 
+                if (!TextUtils.isEmpty(s1)) {
+                    tv_describe.setVisibility(View.VISIBLE);
+                    tv_describe.setText(s1);
+                } else {
+                    tv_describe.setVisibility(View.GONE);
+                }
 
                 sumPrice();
 
@@ -287,6 +332,13 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
                             goodstype = list.get(position).getPrice();
                             goodstypeposition = position;
+                            String s1 = list.get(position).getDescribe();
+                            if (!TextUtils.isEmpty(s1)) {
+                                tv_describe.setVisibility(View.VISIBLE);
+                                tv_describe.setText(s1);
+                            } else {
+                                tv_describe.setVisibility(View.GONE);
+                            }
                         }
 
                         sumPrice();
@@ -297,14 +349,17 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
                     }
                 });
+
             }
 
             @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
+            public void onFailure(int errorNo, String strMsg) {
+                super.onFailure(errorNo, strMsg);
+
                 hideWaitDialog();
                 T.s(R.string.networf_errot);
-                Log.d(TAG, "onFailure() called with: t = [" + t + "], errorNo = [" + errorNo + "], strMsg = [" + strMsg + "]");
+                Log.d(TAG, "onFailure() called with: errorNo = [" + errorNo + "], strMsg = [" + strMsg + "]");
+
             }
         });
 
@@ -343,7 +398,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 }
             }
 
-            tv_gongjin.setText(osb.getWeight());
+            et_gongjin.setText(osb.getWeight());
             tv_gongli.setText(osb.getDistance());
 
             String taketype = osb.getTaketype();
@@ -398,29 +453,29 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             yuanjia = Double.valueOf(getIntent().getStringExtra("price")) - Double.valueOf(osb.getNightnight());
             points = osb.getPoints();
             percent = osb.getPercent();
-            weight = osb.getWeight();
+            weight = Integer.valueOf(osb.getWeight());
 
         }
-        seekBar.setMax(30);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                tvJiajMoney.setText(progress + "");
-                addPice = progress;
-                sumPrice();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+//        seekBar.setMax(30);
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//
+//                tvJiajMoney.setText(progress + "");
+//                addPice = progress;
+//                sumPrice();
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
 
         if (osb.getPoints().equals("0")) {
 
@@ -474,36 +529,6 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         });
 
 
-        rg_otherServise.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                //右移一位 是应为布局中有TextView 影响到了下标
-                int index = group.indexOfChild(group.findViewById(checkedId)) >> 1; //就可以得到index
-
-                L.e(index + "==========");
-
-                switch (index) {
-
-                    case 0: {
-
-                        servise = yuanjia * 0.3;
-                    }
-                    break;
-                    case 1: {
-                        servise = 10;
-                    }
-                    break;
-                    case 2: {
-                        servise = 0;
-                    }
-                    break;
-                }
-
-                sumPrice();
-            }
-        });
-
         rg_paisong.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -515,16 +540,13 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 switch (index) {
 
                     case 0: {
-
-                        paisongtype = 8;
+                        tv_pstype.setText("平台默认使用摩托车或步行配送物品");
+                        paisongtype = 0;
                     }
                     break;
                     case 1: {
-                        paisongtype = 0;
-                    }
-                    break;
-                    case 2: {
-                        paisongtype = 0;
+                        tv_pstype.setText("使用货车配送物品需加8元服务费");
+                        paisongtype = 8;
                     }
                     break;
                 }
@@ -551,9 +573,9 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         ivJijianSe.setOnClickListener(this);
         iv_shoujian_se.setOnClickListener(this);
 
-        cbBx.setOnClickListener(this);
-        cbJc.setOnClickListener(this);
-        cbMt.setOnClickListener(this);
+        cb_hc.setOnClickListener(this);
+        cb_mo.setOnClickListener(this);
+        // cbMt.setOnClickListener(this);
 
         rbBx.setOnClickListener(this);
         rbJc.setOnClickListener(this);
@@ -564,9 +586,9 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         tvJijianadd.setOnClickListener(this);
 
 
-        cbJc.setOnCheckedChangeListener(this);
-        cbMt.setOnCheckedChangeListener(this);
-        cbBx.setOnCheckedChangeListener(this);
+        cb_mo.setOnCheckedChangeListener(this);
+        //cbMt.setOnCheckedChangeListener(this);
+        cb_hc.setOnCheckedChangeListener(this);
 
         rbJc.setOnCheckedChangeListener(this);
         rbMt.setOnCheckedChangeListener(this);
@@ -580,6 +602,102 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 //        etBeizhu.setOnClickListener(this);
 //        etQuphone.setOnClickListener(this);
 //        etZhuname.setOnClickListener(this);
+
+        cb_cb1.setOnClickListener(this);
+        cb_cb2.setOnClickListener(this);
+        cb_cb3.setOnClickListener(this);
+        cb_cb4.setOnClickListener(this);
+        cb_cb5.setOnClickListener(this);
+        cb_cb6.setOnClickListener(this);
+        cb_cb7.setOnClickListener(this);
+        cb_cb8.setOnClickListener(this);
+
+        iv_gjjia.setOnClickListener(this);
+        iv_gjjian.setOnClickListener(this);
+        iv_jgjia.setOnClickListener(this);
+        iv_jgjian.setOnClickListener(this);
+
+        et_gongjin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (!TextUtils.isEmpty(s.toString())) {
+                    try {
+                        weight = Integer.valueOf(s.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    weight = 1;
+                }
+                getPrice();
+            }
+        });
+
+        et_gongjin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (TextUtils.isEmpty(et_gongjin.getText().toString())) {
+                        weight = 1;
+                        et_gongjin.setText(weight + "");
+                        et_gongjin.setSelection(et_gongjin.getText().toString().length());
+                        getPrice();
+                    }
+                }
+            }
+        });
+
+        etJiajMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    try {
+                        addPice = Integer.valueOf(s.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    addPice = 0;
+                }
+                getPrice();
+            }
+        });
+
+        etJiajMoney.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (TextUtils.isEmpty(etJiajMoney.getText().toString())) {
+                        addPice = 0;
+                        etJiajMoney.setText((int) addPice + "");
+                        etJiajMoney.setSelection(etJiajMoney.getText().toString().length());
+                        getPrice();
+                    }
+                }
+            }
+        });
 
 //
 
@@ -671,12 +789,12 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 break;
 
-            case R.id.cb_bx:
+            case R.id.cb_mo:
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 break;
-            case R.id.cb_mt:
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-                break;
+//            case R.id.cb_mt:
+//                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//                break;
             case R.id.cb_jc:
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 break;
@@ -730,6 +848,134 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 UIHelper.openAddressHistory2(this, peopleBean_dw, city, 1, 300);
                 break;
+
+
+            case R.id.cb_cb1:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb1.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb1.getText().toString());
+                }
+                break;
+
+            case R.id.cb_cb2:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb1.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb2.getText().toString());
+                }
+                break;
+
+            case R.id.cb_cb3:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb3.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb3.getText().toString());
+                }
+                break;
+
+            case R.id.cb_cb4:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb4.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb4.getText().toString());
+                }
+                break;
+
+            case R.id.cb_cb5:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb5.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb5.getText().toString());
+                }
+                break;
+
+
+            case R.id.cb_cb6:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb6.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb6.getText().toString());
+                }
+                break;
+
+            case R.id.cb_cb7:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb7.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb7.getText().toString());
+                }
+                break;
+
+            case R.id.cb_cb8:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                if (TextUtils.isEmpty(etBeizhu.getText().toString())) {
+                    etBeizhu.append(cb_cb8.getText().toString());
+                } else {
+                    etBeizhu.append("," + cb_cb8.getText().toString());
+                }
+                break;
+
+
+            case R.id.iv_gjjian://减
+
+                if (weight == 2) {
+                    iv_gjjian.setBackgroundResource(R.mipmap.icon_jian);
+                }
+
+                if (weight > 1) {
+                    weight--;
+                    et_gongjin.setText(weight + "");
+                    et_gongjin.setSelection(et_gongjin.getText().toString().length());
+
+                }
+
+                getPrice();
+                break;
+            case R.id.iv_gjjia://加
+
+                weight++;
+                if (weight > 1) {
+                    iv_gjjian.setBackgroundResource(R.drawable.jianhao_btn_bg);
+                }
+                et_gongjin.setText(weight + "");
+                et_gongjin.setSelection(et_gongjin.getText().toString().length());
+
+                getPrice();
+                break;
+
+            case R.id.iv_jgjian://减
+
+                if (addPice == 1) {
+                    iv_jgjian.setBackgroundResource(R.mipmap.icon_jian);
+                }
+
+                if (addPice > 0) {
+                    addPice--;
+                    etJiajMoney.setText((int) addPice + "");
+                    etJiajMoney.setSelection(etJiajMoney.getText().toString().length());
+                }
+
+                getPrice();
+                break;
+            case R.id.iv_jgjia://加
+
+                addPice++;
+                if (addPice > 0) {
+                    iv_jgjian.setBackgroundResource(R.drawable.jianhao_btn_bg);
+                }
+                etJiajMoney.setText((int) addPice + "");
+                etJiajMoney.setSelection(etJiajMoney.getText().toString().length());
+                getPrice();
+                break;
+
 
 //            case R.id.et_zhuname:
 //                etBeizhu.setCursorVisible(false);
@@ -836,10 +1082,16 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     // 验证是否 可 提交 订单
     private boolean isVerOk() {
 
-        String orname = etZhuname.getText().toString();
+        if (list == null) {
+            T.s(R.string.networf_errot);
+            return false;
+        }
+
+        String orname = list.get(sp_type.getSelectedItemPosition()).getName();
+        //etZhuname.getText().toString();
         if (TextUtils.isEmpty(orname)) {
 
-            T.s("请输入物品名称");
+            T.s("请选择物品名称");
             return false;
         }
         osb.setOname(orname);
@@ -847,21 +1099,23 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         //移除第一个字符
         String s = tv_service.getText().toString().substring(1, tv_service.getText().toString().length());
 
-        osb.setAddprice(Double.valueOf(tvJiajMoney.getText().toString())
+        osb.setAddprice(Double.valueOf(etJiajMoney.getText().toString())
                 + Double.valueOf(s) + "");
 
         // osb.setMessage(etBeizhu.getText().toString());
 
+        osb.setWeight(et_gongjin.getText().toString());
+
         int max = 0;
-        if (cbJc.isChecked()) {// 机车
+        if (cb_mo.isChecked()) {// 机车
             max = max + 4;
         }
-        if (cbBx.isChecked()) {//步行
+        if (cb_hc.isChecked()) {//步行
             max = max + 1;
         }
-        if (cbMt.isChecked()) {//// 摩托
-            max = max + 2;
-        }
+//        if (cbMt.isChecked()) {//// 摩托
+//            max = max + 2;
+//        }
 
         if (max == 0) {
             max = 7;
@@ -1131,6 +1385,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                                     etQuphone.setText(peopleBean.getPhone());
                                     peopleBean_jj.setPhone(peopleBean.getPhone());
                                 }
+                                setDistance();
                             } else if (type == 1) {
 
                                 tvJijianadd.setText(add);
@@ -1146,8 +1401,9 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                                     etShouphone.setText(peopleBean.getPhone());
                                     peopleBean_sj.setPhone(peopleBean.getPhone());
                                 }
+                                setDistance();
                             }
-                            setDistance();
+
                         }
                     }
                     String back = data.getStringExtra("data");
@@ -1265,54 +1521,70 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
         switch (buttonView.getId()) {
-            case R.id.cb_jc: {
+            case R.id.cb_mo: {
                 if (isChecked) {
-                    paisongtype = 8;
-                    cbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+                    cb_mo.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
                 } else
-                    cbJc.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+                    cb_mo.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
             }
             break;
 
-            case R.id.cb_mt: {
-                if (isChecked) {
-                    paisongtype = 0;
-                    cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                } else
-                    cbMt.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
-            }
-            break;
+//            case R.id.cb_mt: {
+//                if (isChecked) {
+//                    paisongtype = 0;
+//                    cbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+//                } else
+//                    cbMt.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+//            }
+//            break;
 
-            case R.id.cb_bx: {
+            case R.id.cb_hc: {
                 if (isChecked) {
-                    paisongtype = 0;
-                    cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
+                    cb_hc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
                 } else
-                    cbBx.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+                    cb_hc.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
             }
             break;
 
             case R.id.rb_jc: {
                 if (isChecked) {
+                    servise += yuanjia * 0.3;
+                    /*rbBx.setChecked(false);
+                    rbMt.setChecked(false);*/
                     rbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                } else
+                } else {
                     rbJc.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+                    servise -= yuanjia * 0.3;
+                }
+                sumPrice();
             }
             break;
 
             case R.id.rb_mt: {
                 if (isChecked) {
+                    servise += 10;
+                   /* rbBx.setChecked(false);
+                    rbJc.setChecked(false);*/
                     rbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                } else
+                } else {
                     rbMt.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+                    servise -= 10;
+                }
+                sumPrice();
             }
             break;
 
             case R.id.rb_bx: {
                 if (isChecked) {
+                    servise += 5;
+                   /* rbMt.setChecked(false);
+                    rbJc.setChecked(false);*/
                     rbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
-                } else
+                } else {
                     rbBx.setTextColor(Color.argb(0xFF, 0x77, 0x77, 0x77));
+                    servise -= 5;
+                }
+                sumPrice();
             }
             break;
         }
@@ -1329,6 +1601,18 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
             //夜间家
             tv_yejianjia.setText("￥" + df.format(Double.valueOf(night)));
+        }
+
+        String s = et_gongjin.getText().toString();
+
+        if (Integer.valueOf(s) < 1) {
+            et_gongjin.setText("1");
+            et_gongjin.setSelection(et_gongjin.getText().toString().length());
+        }
+
+        //三个都没选中
+        if ((!rbMt.isChecked()) && (!rbJc.isChecked()) && (!rbBx.isChecked())) {
+            servise = 0;
         }
 
         //加价
@@ -1353,14 +1637,14 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         double pic = Double.valueOf(night) + yuanjia - percent * DiKou + addPice + servise + goodstype + paisongtype;
         //总价
         tv_zongjia.setText("￥" + df.format(pic));
-
+        tv_zongjia1.setText("￥" + df.format(pic));
     }
 
     // 计算价格
     private void getPrice() {
 
         //判断 是否 开始计算价格
-        ApiHttpClient.cancelRequests(this);
+        ApiHttpClient.cancelRequests();
 
         BigDecimal big = new BigDecimal(distance);
 
@@ -1400,7 +1684,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 //                        price = dou3 + "";
 //                    }
                     //  tvShowmo.setText(price + "元");
-                    //  btnNext.setEnabled(true);
+                    btnNext.setEnabled(true);
 
                     L.e(price + "----------------");
 
@@ -1426,7 +1710,7 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             public void onSendError(int statusCode, String message) {
                 Log.d(TAG, "onSendError() called with: " + "statusCode = [" + statusCode + "], message = [" + message + "]");
                 //  tvShowmo.setText("网络错误");
-                //  btnNext.setEnabled(false);
+                btnNext.setEnabled(false);
                 //   handler.obtainMessage(0).sendToTarget();
             }
         });

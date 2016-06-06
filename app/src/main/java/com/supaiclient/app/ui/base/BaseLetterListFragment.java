@@ -257,7 +257,7 @@ public abstract class BaseLetterListFragment<T extends BaseResponseBodyBean> ext
         // 结束任务
 //        cancelReadCacheTask();
 //        cancelParserTask();
-        ApiHttpClient.cancelRequests(getActivity());
+        ApiHttpClient.cancelRequests();
         super.onDestroy();
     }
 

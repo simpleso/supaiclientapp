@@ -9,17 +9,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
-import com.supaiclient.app.api.UserApi;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.ui.base.BaseFragment;
 import com.supaiclient.app.util.T;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import org.kymjs.kjframe.http.HttpParams;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -111,7 +109,7 @@ public class FapiaoAddFragment extends BaseFragment {
                 }
 
                 showWaitDialog("申请中..");
-                RequestParams params = new RequestParams();
+                HttpParams params = new HttpParams();
                 params.put("money", youhui);
                 params.put("intt", et_quphone);
                 params.put("inbz", et_beizhu);

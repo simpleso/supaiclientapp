@@ -2,8 +2,9 @@ package com.supaiclient.app.api;
 
 import android.content.Context;
 
-import com.loopj.android.http.RequestParams;
 import com.supaiclient.app.interf.RequestBasetListener;
+
+import org.kymjs.kjframe.http.HttpParams;
 
 /**
  * Created by Administrator on 2015/12/29.
@@ -19,7 +20,7 @@ public class AreaApi {
      */
     public static final void getoAreasendaddlist(Context context, int type, RequestBasetListener requestBasetListener) {
 
-        RequestParams params = new RequestParams();
+        HttpParams params = new HttpParams();
         if (type == 0) {
             ApiHttpClient.postList(context, UrlUtil.areasendadd, params, requestBasetListener);
         } else {

@@ -57,7 +57,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="订单号码"
+                    android:text=""
                     android:textColor="@color/base_black_01"
                     android:textSize="@dimen/basesize02" />
 
@@ -96,7 +96,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="订单号码"
+                    android:text=""
                     android:textColor="@color/base_black_01"
                     android:textSize="@dimen/basesize02" />
 
@@ -147,7 +147,7 @@
                             android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:maxLines="1"
-                            android:text="订单号码"
+                            android:text=""
                             android:textColor="@color/base_black_01"
                             android:textSize="@dimen/basesize02" />
 
@@ -186,7 +186,7 @@
                             android:layout_marginLeft="10dp"
                             android:gravity="center_vertical"
                             android:maxLines="1"
-                            android:text="订单号码"
+                            android:text=""
                             android:textColor="@color/base_black_01"
                             android:textSize="@dimen/basesize02" />
 

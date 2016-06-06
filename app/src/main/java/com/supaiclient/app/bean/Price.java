@@ -8,11 +8,13 @@ package com.supaiclient.app.bean;
 public class Price {
 
     /**
-     * name : 鲜花
+     * name : 蛋糕
      * price : 5
+     * describe 蛋糕类物品需要支付5元服务费
      */
     private String name;
     private int price;
+    private String describe;
 
     public String getName() {
         return name;
@@ -30,10 +32,19 @@ public class Price {
         this.price = price;
     }
 
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
     @Override
     public String toString() {
         return "Price{" +
                 "name='" + name + '\'' +
+                ", describe='" + describe + '\'' +
                 ", price=" + price +
                 '}';
     }
