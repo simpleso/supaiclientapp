@@ -1,15 +1,18 @@
 [
     {
         "name": "鲜花",
-        "price": 5
+        "price": 5,
+        "describe":"鲜花类物品需要支付5元服务费"
     },
     {
         "name": "蛋糕",
-        "price": 5
+        "price": 5,
+        "describe":"蛋糕类物品需要支付5元服务费"
     }
     ,
     {
-        "name": "其它",
-        "price": 0
+        "name": "测试",
+        "price": 0,
+        "describe":""
     }
 ]
