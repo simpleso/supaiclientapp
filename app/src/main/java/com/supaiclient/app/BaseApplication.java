@@ -16,6 +16,7 @@ import com.supaiclient.app.interf.OnLoginBackLinstener;
 import com.supaiclient.app.util.CustomExceptionHandler;
 
 import org.kymjs.kjframe.KJHttp;
+import org.kymjs.kjframe.http.HttpConfig;
 
 /**
  * 全局应用
@@ -190,7 +191,13 @@ public class BaseApplication extends MultiDexApplication implements ComponentCal
 //        client.setCookieStore(myCookieStore);
 //        client.setMaxConnections(200000);
 
-        ApiHttpClient.setHttpClient(new KJHttp());
+
+        //不适用缓存
+        HttpConfig httpConfig = new HttpConfig();
+        httpConfig.cacheTime = 0;
+        KJHttp kjHttp = new KJHttp(httpConfig);
+        ApiHttpClient.setHttpClient(kjHttp);
+
 
         //xUtils 的初始化
         // x.Ext.init(this);

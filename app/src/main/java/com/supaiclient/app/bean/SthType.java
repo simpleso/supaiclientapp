@@ -1,17 +1,19 @@
 package com.supaiclient.app.bean;
 
 /**
- * 服务费
- * Created by Administrator on 2016/6/2.
+ * 物品类型
+ * Created by Administrator on 2016/6/6.
  */
 
-public class Price {
+public class SthType {
+
 
     /**
-     * name : 蛋糕
+     * name : 鲜花蛋糕
      * price : 5
-     * describe 蛋糕类物品需要支付5元服务费
+     * describe : 鲜花蛋糕类物品需要支付5元服务费
      */
+
     private String name;
     private int price;
     private String describe;
@@ -42,10 +44,10 @@ public class Price {
 
     @Override
     public String toString() {
-        return "Price{" +
+        return "SthType{" +
                 "name='" + name + '\'' +
-                ", describe='" + describe + '\'' +
                 ", price=" + price +
+                ", describe='" + describe + '\'' +
                 '}';
     }
 }

@@ -83,7 +83,7 @@ public class IntegralActivity extends BaseActivity {
         }
 
         adapter = new InregralPagerAdapter(getSupportFragmentManager(), mList, mTitle);
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(2);  //设置缓存个数
         mViewPager.setAdapter(adapter);
         mTabLayout.setTabsFromPagerAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);

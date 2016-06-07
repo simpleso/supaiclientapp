@@ -56,6 +56,7 @@ public abstract class BaseListFragment<T extends BaseResponseBodyBean> extends B
     LinearLayout baseListHeadDialog;
     private ParserTask mParserTask;
     private OnLodingFinsh onLodingFinsh;
+
     protected RequestBasetListener requestBasetListener = new RequestBasetListener() {
         @Override
         public void onSuccess(String responseStr) {

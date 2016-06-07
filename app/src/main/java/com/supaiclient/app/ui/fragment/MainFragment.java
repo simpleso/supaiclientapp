@@ -1068,7 +1068,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         RegeocodeAddress mRegeocodeAddress = regeocodeResult.getRegeocodeAddress();
 
 
-        L.e("1" + mRegeocodeAddress.getFormatAddress());
+       /* L.e("1" + mRegeocodeAddress.getFormatAddress());
         L.e("2" + mRegeocodeAddress.getAdCode());
         L.e("3" + mRegeocodeAddress.getBuilding());
         L.e("4" + mRegeocodeAddress.getCity());
@@ -1077,7 +1077,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
         L.e("7" + mRegeocodeAddress.getNeighborhood());
         L.e("8" + mRegeocodeAddress.getProvince());
         L.e("9" + mRegeocodeAddress.getTownship());
-
+*/
        /* indexAddre = mRegeocodeAddress.getBuilding();
 
         if (!TextUtils.isEmpty(indexAddre)) {
@@ -1152,7 +1152,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                     indexAddre = peopleBean_jj.getAdd();
                     setShowAddr(indexAddre);
 
-                    for (PoiItem item : list) {
+                   /* for (PoiItem item : list) {
 
                         L.e("convert = " + item.toString());
                         L.e("--01--" + item.getCityName());
@@ -1172,7 +1172,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                         L.e("--15--" + item.getDistance());
 
                         L.e(item.toString());
-                    }
+                    }*/
 
 
 //                                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(la, f);//设置缩放比例
@@ -1215,7 +1215,7 @@ public class MainFragment extends Fragment implements OnClickListener, GeocodeSe
                 return;
             }
 
-            MainFragment.location = aMapLocation;
+            location = aMapLocation;
 
             indexAddre = aMapLocation.getAddress();
 

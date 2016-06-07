@@ -39,4 +39,14 @@ public class DensityUtil {
         return (int) (spValue * fontScale + 0.5f);
     }
 
+    public static int getPhoneHeight(Context context) {
+        float f = context.getResources().getDisplayMetrics().heightPixels;
+        return (int) f;
+    }
+
+    public static int getPhoneWidth(Context context) {
+        float f = context.getResources().getDisplayMetrics().widthPixels;
+        return (int) f;
+    }
+
 }

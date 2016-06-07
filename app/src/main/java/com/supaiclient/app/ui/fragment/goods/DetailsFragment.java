@@ -1,5 +1,6 @@
 package com.supaiclient.app.ui.fragment.goods;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.supaiclient.app.R;
@@ -19,8 +19,6 @@ import com.supaiclient.app.api.ApiHttpClient;
 import com.supaiclient.app.api.UrlUtil;
 import com.supaiclient.app.bean.OrderDetailBean;
 import com.supaiclient.app.interf.RequestBasetListener;
-import com.supaiclient.app.ui.adapter.base.BaseAdapterHelper;
-import com.supaiclient.app.ui.adapter.base.QuickAdapter;
 import com.supaiclient.app.ui.base.BaseFragment;
 import com.supaiclient.app.util.DateUtils;
 import com.supaiclient.app.util.JSonUtils;
@@ -29,8 +27,6 @@ import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.http.HttpParams;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -88,8 +84,7 @@ public class DetailsFragment extends BaseFragment {
     TextView tvGongli;
     //    @Bind(R.id.seekBar)
 //    SeekBar seekBar;
-    @Bind(R.id.et_gongjin)
-    EditText tvGongjin;
+
     //    @Bind(R.id.tv_jiajMoney)
 //    TextView tvJiajMoney;
     @Bind(R.id.tv_qijia)
@@ -143,10 +138,10 @@ public class DetailsFragment extends BaseFragment {
     LinearLayout ll_bootom;
     @Bind(R.id.ll_addpic)
     LinearLayout ll_addpic;
-    @Bind(R.id.ll_addgj)
-    LinearLayout ll_addgj;
+    @Bind(R.id.et_gongjin)
+    EditText et_gongjin;
     @Bind(R.id.sp_type)
-    Spinner sp_type;
+    TextView sp_type;
     @Bind(R.id.tv_describe)
     TextView tv_describe;
 
@@ -273,6 +268,18 @@ public class DetailsFragment extends BaseFragment {
             tv_service.setText("￥" + orderDetailBean.getAddprice());
         }
 
+        if (orderDetailBean.getCpstyle().equals("0")) {
+            cb_mo.setTextColor(Color.rgb(0xFD, 0xC1, 0x86));
+            cb_mo.setChecked(true);
+            cb_hc.setTextColor(Color.rgb(0x77, 0x77, 0x77));
+            cb_hc.setChecked(false);
+        } else if (orderDetailBean.getCpstyle().equals("1")) {
+            cb_hc.setTextColor(Color.rgb(0xFD, 0xC1, 0x86));
+            cb_mo.setChecked(false);
+            cb_mo.setTextColor(Color.rgb(0x77, 0x77, 0x77));
+            cb_hc.setChecked(true);
+        }
+
 //        if (orderDetailBean.getCpstyle().equals("1")) {
 //            cbBx.setChecked(true);
 //            cbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
@@ -323,7 +330,6 @@ public class DetailsFragment extends BaseFragment {
         }
 
         tvGongli.setText(orderDetailBean.getDistance());
-        tvGongjin.setText(orderDetailBean.getWeight());
 //        tvQijia.setText("￥" + orderDetailBean.getWeight());
 
         tvZongjia.setText("￥" + orderDetailBean.getNeedprice() + "");
@@ -336,9 +342,6 @@ public class DetailsFragment extends BaseFragment {
         ll_bootom.setVisibility(View.GONE);
         ll_addpic.setVisibility(View.GONE);
 
-        List<String> strings = new ArrayList<>();
-        strings.add(orderDetailBean.getOname());
-
         tv_describe.setVisibility(View.GONE);
         llbeizu1.setVisibility(View.GONE);
         llbeizu2.setVisibility(View.GONE);
@@ -346,14 +349,17 @@ public class DetailsFragment extends BaseFragment {
         llmiaoshu2.setVisibility(View.GONE);
         llmiaoshu1.setVisibility(View.GONE);
 
-        ll_addgj.setVisibility(View.GONE);
+        et_gongjin.setText(orderDetailBean.getWeight() + "");
+        et_gongjin.setEnabled(false);
 
         sp_type.setEnabled(false);
-        sp_type.setAdapter(new QuickAdapter<String>(getActivity(), R.layout.spinner_item, strings) {
+        sp_type.setText(orderDetailBean.getOname() + "");
+
+        /*sp_type.setAdapter(new QuickAdapter<String>(getActivity(), R.layout.spinner_item, strings) {
             @Override
             protected void convert(BaseAdapterHelper helper, String item) {
                 helper.setText(R.id.tv_spinner, item);
             }
-        });
+        });*/
     }
 }

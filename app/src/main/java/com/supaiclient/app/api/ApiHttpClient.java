@@ -24,9 +24,9 @@ import org.kymjs.kjframe.http.HttpParams;
 
 public class ApiHttpClient {
 
-    //    public static String API_URL = "http://192.168.1.200/sendspcr/public/index.php/Uapi";
-    public static String API_URL = "http://120.27.150.115/spcr/public/index.php/Uapi";
-    //    public static String API_URL = "http://http://120.27.150.115/Uapi";
+    // public static String API_URL = "http://192.168.1.200/sendspcr/public/index.php/Uapi";
+       public static String API_URL = "http://120.27.150.115/spcr/public/index.php/Uapi";
+    // public static String API_URL = "http://http://120.27.150.115/Uapi";
     // public static FinalHttp client;
     public static KJHttp client;
 
@@ -37,13 +37,11 @@ public class ApiHttpClient {
     public static KJHttp getHttpClient() {
 
         if (client == null) {
-
             client = new KJHttp();
         }
         HttpConfig httpConfig = new HttpConfig();
         httpConfig.cacheTime = 0;
         client.setConfig(httpConfig);
-
         return client;
     }
 
@@ -88,13 +86,23 @@ public class ApiHttpClient {
         final String url = API_URL + partUrl;
         if (client == null) {
 
-            client = new KJHttp();
+            client = getHttpClient();
         }
         if (islogin == false) {
+
            // client.getConfig().delayTime == 15000;
+            HttpConfig httpConfig =   client.getConfig();
+            httpConfig.delayTime = 15000;
+            client.setConfig(httpConfig);
+
         } else {
 
             //client.configTimeout(5000);
+
+            HttpConfig httpConfig =   client.getConfig();
+            httpConfig.delayTime = 5000;
+            client.setConfig(httpConfig);
+
         }
         params.put("type", "android");
 

@@ -349,23 +349,30 @@
                             style="@style/baseline_height"
                             android:layout_marginLeft="5dp" />
 
-                        <Spinner
+                        <TextView
+                            android:layout_marginLeft="5dp"
                             android:id="@+id/sp_type"
-                            android:layout_width="120dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:background="@drawable/base_hub_while_shen_bg"
                             android:maxLines="1"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp"
+                            android:paddingRight="8dp"
+                            android:paddingLeft="8dp"
+                            android:text="其他物品"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@mipmap/cc_fh_b"
                             android:singleLine="true"
                             android:textColor="@color/base_black_02"
-                            android:textSize="@dimen/basesize02" />
+                            android:textSize="@dimen/basesize04" />
                     </LinearLayout>
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -381,8 +388,10 @@
                             android:id="@+id/tv_describe"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@mipmap/dis"
+                            android:drawableLeft="@mipmap/remind"
                             android:text="物品类型描述"
+                            android:drawablePadding="5dp"
+                            android:gravity="center_vertical"
                             android:textColor="@color/base_black_02"
                             android:textSize="@dimen/basesize05" />
 
@@ -826,7 +835,7 @@
                                     android:id="@+id/textView"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="0.5" />
+                                    android:layout_weight="0.3" />
 
                                 <RadioButton
                                     android:id="@+id/cb_mo"
@@ -916,7 +925,9 @@
                         android:id="@+id/tv_pstype"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@mipmap/dis"
+                        android:drawableLeft="@mipmap/remind"
+                        android:gravity="center_vertical"
+                        android:drawablePadding="5dp"
                         android:text="平台默认使用摩托车或步行配送物品"
                         android:textColor="@color/base_black_02"
                         android:textSize="@dimen/basesize05" />
@@ -1032,6 +1043,7 @@
                 android:id="@+id/llmiaoshu2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -1048,7 +1060,9 @@
                     android:id="@+id/tv_othertype"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@mipmap/dis"
+                    android:drawableLeft="@mipmap/remind"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
                     android:text="物品类型描述"
                     android:textColor="@color/base_black_02"
                     android:textSize="@dimen/basesize05" />
@@ -1073,7 +1087,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="加价："
+                    android:text="加        价:"
                     android:textColor="@color/base_black_02"
                     android:textSize="@dimen/basesize02" />
 

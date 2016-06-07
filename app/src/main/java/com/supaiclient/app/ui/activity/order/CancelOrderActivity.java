@@ -147,7 +147,7 @@ public class CancelOrderActivity extends BaseActivity implements View.OnClickLis
 
                 tvBiede.setTextColor(white);
                 tvBiede.setBackgroundResource(R.drawable.sp_base_blue2);
-                yuany = tvChongxin.getText().toString();
+                yuany = tvBiede.getText().toString();
 
 
                 tvTaijiu.setTextColor(cancelorder);
