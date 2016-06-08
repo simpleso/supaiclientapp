@@ -390,6 +390,7 @@
                             android:layout_height="wrap_content"
                             android:drawableLeft="@mipmap/remind"
                             android:text="物品类型描述"
+                            android:visibility="gone"
                             android:drawablePadding="5dp"
                             android:gravity="center_vertical"
                             android:textColor="@color/base_black_02"
@@ -769,6 +770,7 @@
                     android:inputType="number"
                     android:paddingBottom="3dp"
                     android:paddingTop="3dp"
+                    android:maxLength="3"
                     android:text="1"
                     android:textColor="@color/base_black_01"
                     android:textSize="@dimen/basesize03" />
@@ -972,7 +974,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5" />
+                            android:layout_weight="0.3" />
 
                         <CheckBox
                             android:id="@+id/rb_jc"
@@ -1011,12 +1013,14 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/sp_submitorder_bg"
                             android:button="@null"
+                            android:visibility="gone"
                             android:text="垫付款项"
                             android:textColor="@color/base_black_02"
                             android:textSize="@dimen/basesize02" />
 
                         <TextView
                             android:layout_width="0dp"
+                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:layout_weight="1" />
                         <!--</RadioGroup>-->
@@ -1064,6 +1068,7 @@
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     android:text="物品类型描述"
+                    android:visibility="gone"
                     android:textColor="@color/base_black_02"
                     android:textSize="@dimen/basesize05" />
             </LinearLayout>
@@ -1110,6 +1115,7 @@
                     android:inputType="number"
                     android:paddingBottom="3dp"
                     android:paddingTop="3dp"
+                    android:maxLength="3"
                     android:text="0"
                     android:textColor="@color/base_black_01"
                     android:textSize="@dimen/basesize03" />

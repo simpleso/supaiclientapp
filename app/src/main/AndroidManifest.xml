@@ -65,9 +65,9 @@
     <!-- 自定义权限 -->
 
 
-    <permission
+    <!--<permission
         android:name="getui.permission.GetuiService"
-        android:protectionLevel="normal" />
+        android:protectionLevel="normal" />-->
 
     <application
         android:name=".BaseApplication"

@@ -268,12 +268,14 @@ public class DetailsFragment extends BaseFragment {
             tv_service.setText("￥" + orderDetailBean.getAddprice());
         }
 
-        if (orderDetailBean.getCpstyle().equals("0")) {
+        if (orderDetailBean.getCpstyle().equals("1")||
+                orderDetailBean.getCpstyle().equals("2")||
+                orderDetailBean.getCpstyle().equals("3")) {
             cb_mo.setTextColor(Color.rgb(0xFD, 0xC1, 0x86));
             cb_mo.setChecked(true);
             cb_hc.setTextColor(Color.rgb(0x77, 0x77, 0x77));
             cb_hc.setChecked(false);
-        } else if (orderDetailBean.getCpstyle().equals("1")) {
+        } else if (orderDetailBean.getCpstyle().equals("4")) {
             cb_hc.setTextColor(Color.rgb(0xFD, 0xC1, 0x86));
             cb_mo.setChecked(false);
             cb_mo.setTextColor(Color.rgb(0x77, 0x77, 0x77));

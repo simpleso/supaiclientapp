@@ -22,4 +22,8 @@
     <string name="user">个人中心</string>
     <string name="myIntegral">我的积分</string>
 
+    <string name="dingdanhuizhi">需要支付订单里程家的30%服务费</string>
+    <string name="wupingbanyun">物品搬运需要支付10元的服务费</string>
+    <string name="dianfukuanxiang">垫付款项需要支付5元服务费</string>
+
 </resources>

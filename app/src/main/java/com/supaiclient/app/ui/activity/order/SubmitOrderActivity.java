@@ -212,6 +212,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
     @Bind(R.id.tv_pstype)
     TextView tv_pstype;
+    @Bind(R.id.tv_othertype)
+    TextView tv_othertype;
 
     List<SthType> list;
 
@@ -282,6 +284,12 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
         peopleBean_sj = osb.getPeopleBean_sj();
         init();
         showWaitDialog("请稍后...");
+
+        getType();
+
+    }
+
+    private void getType() {
 
         KJHttp kjHttp = new KJHttp();
         kjHttp.get("https://raw.githubusercontent.com/simpleso/supaiclientapp/master/price", new HttpCallBack() {
@@ -434,13 +442,12 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                 super.onFailure(errorNo, strMsg);
 
                 hideWaitDialog();
+                getType();
                 T.s(R.string.networf_errot);
                 Log.d(TAG, "onFailure() called with: errorNo = [" + errorNo + "], strMsg = [" + strMsg + "]");
 
             }
         });
-
-
     }
 
     private void init() {
@@ -709,11 +716,12 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void afterTextChanged(Editable s) {
 
-                if (!TextUtils.isEmpty(s.toString())) {
+                if (!TextUtils.isEmpty(s.toString().trim())) {
                     try {
                         weight = Integer.valueOf(s.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
+                        weight = 1;
                     }
                 } else {
                     weight = 1;
@@ -731,6 +739,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                         et_gongjin.setText(weight + "");
                         et_gongjin.setSelection(et_gongjin.getText().toString().length());
                         getPrice();
+                    } else {
+                        et_gongjin.setText(Integer.valueOf(et_gongjin.getText().toString()) + "");
                     }
                 }
             }
@@ -749,11 +759,12 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s.toString())) {
+                if (!TextUtils.isEmpty(s.toString().trim())) {
                     try {
                         addPice = Integer.valueOf(s.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
+                        addPice = 0;
                     }
                 } else {
                     addPice = 0;
@@ -771,13 +782,12 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
                         etJiajMoney.setText((int) addPice + "");
                         etJiajMoney.setSelection(etJiajMoney.getText().toString().length());
                         getPrice();
+                    } else {
+                        etJiajMoney.setText(Integer.valueOf(etJiajMoney.getText().toString()) + "");
                     }
                 }
             }
         });
-
-//
-
         //   lv_root.setListener(this);
     }
 
@@ -1185,10 +1195,10 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
         int max = 0;
         if (cb_mo.isChecked()) {// 默认
-            max = 0;
+            max = 3;
         }
         if (cb_hc.isChecked()) {//货车
-            max = 1;
+            max = 4;
         }
 
         //假数据
@@ -1234,7 +1244,27 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 //        if (goodstypeposition != (list.size() - 1)) {
 //            str = "[ " + list.get(goodstypeposition).getName() + " ]  " + str;
 //        }
-        osb.setMessage(str);
+
+        //数据拼接
+        String ms = "";
+
+        if (rbJc.isChecked()) {
+            ms += rbJc.getText().toString();
+        }
+
+        if (rbMt.isChecked()) {
+            ms += "," + rbMt.getText().toString();
+        }
+
+        if (rbBx.isChecked()) {
+            ms += "," + rbBx.getText().toString();
+        }
+
+        if (TextUtils.isEmpty(str)) {
+            osb.setMessage(ms + str);
+        } else {
+            osb.setMessage(ms + "," + str);
+        }
 
         return true;
     }
@@ -1619,6 +1649,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             case rb_jc: {
                 if (isChecked) {
                     serviseType += 1;
+                    tv_othertype.setVisibility(View.VISIBLE);
+                    tv_othertype.setText(R.string.dingdanhuizhi);
                     rbJc.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
                 } else {
                     serviseType -= 1;
@@ -1631,6 +1663,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             case R.id.rb_mt: {
                 if (isChecked) {
                     serviseType += 2;
+                    tv_othertype.setVisibility(View.VISIBLE);
+                    tv_othertype.setText(R.string.wupingbanyun);
                     rbMt.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
                 } else {
                     serviseType -= 2;
@@ -1643,6 +1677,8 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             case R.id.rb_bx: {
                 if (isChecked) {
                     serviseType += 4;
+                    tv_othertype.setVisibility(View.VISIBLE);
+                    tv_othertype.setText(R.string.dianfukuanxiang);
                     rbBx.setTextColor(Color.argb(0xFF, 0xFD, 0xC1, 0x86));
                 } else {
                     serviseType -= 4;
@@ -1669,19 +1705,25 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
 
         String s = et_gongjin.getText().toString();
 
-        if (Integer.valueOf(s) < 1) {
-            et_gongjin.setText("1");
-            et_gongjin.setSelection(et_gongjin.getText().toString().length());
+        try {
+            if (Integer.valueOf(s) < 1) {
+                et_gongjin.setText("1");
+                et_gongjin.setSelection(et_gongjin.getText().toString().length());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         //加价
         tv_jiajian.setText("￥" + (int) addPice + "");
+
         //里程家
         tv_qijia.setText(yuanjia + "元");
 
         switch (serviseType) {
             case 0:
                 servise = 0;
+                tv_othertype.setVisibility(View.GONE);
                 break;
             case 1:
                 servise = yuanjia * 0.3;

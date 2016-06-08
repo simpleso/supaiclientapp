@@ -308,8 +308,9 @@ public class PayUtil {
 
                         BaseApplication.getInstance().onumber = onumber;
 
+
                         // 默认 数据
-                        // needpay = "0.01";
+                       // needpay = "0.01";
 
                         //   L.e(needpay + "----------");
 
@@ -358,7 +359,7 @@ public class PayUtil {
                         snedSign = jsonObject.getString("sign");
 
                         // 默认 数据
-                        //  needpay = "0.01";
+                       // needpay = "0.01";
 
                         L.e(needpay + "----------");
 

@@ -22,7 +22,6 @@ import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.PayUtil;
 import com.supaiclient.app.util.UIHelper;
 
-
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.http.HttpParams;
 
@@ -59,21 +58,22 @@ public class HistoryFragment extends BaseFragment {
         linContent.removeAllViews();
         HttpParams params = new HttpParams();
         params.put("onumber", onumber);
+        showWaitDialog("请稍后...");
         ApiHttpClient.postNotShow(getActivity(), UrlUtil.orderhistory, params, new RequestBasetListener() {
             @Override
             public void onSuccess(String responseStr) {
-
                 setViewDate(JSonUtils.toBean(OrderHistoryBean.class, responseStr));
+                hideWaitDialog();
             }
 
             @Override
             public void onFailure(int statusCode) {
-
+                hideWaitDialog();
             }
 
             @Override
             public void onSendError(int statusCode, String message) {
-
+                hideWaitDialog();
             }
         });
 

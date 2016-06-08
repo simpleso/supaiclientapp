@@ -42,6 +42,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/UmengDebug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/UmengDebug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/UmengDebug/shaders" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/Umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/Umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/Umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/Umeng/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/Umeng/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/Umeng/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/assets" type="java-test-resource" />
@@ -50,12 +56,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testUmengDebug/shaders" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/Umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/Umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/Umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/Umeng/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/Umeng/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/Umeng/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Umeng/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Umeng/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/Umeng/assets" type="java-resource" />

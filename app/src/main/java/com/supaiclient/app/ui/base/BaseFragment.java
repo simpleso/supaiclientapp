@@ -15,7 +15,7 @@ import com.supaiclient.app.interf.WaitDialogControl;
 /**
  * Created by Administrator on 2015/11/26.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements WaitDialogControl {
 
     public static final int STATE_NONE = 0;
     public static final int STATE_REFRESH = 1;// 刷新
@@ -68,12 +68,12 @@ public class BaseFragment extends Fragment {
         return false;
     }
 
-    protected ProgressDialog showWaitDialog() {
+    public ProgressDialog showWaitDialog() {
         return showWaitDialog(R.string.loading);
     }
 
 
-    protected ProgressDialog showWaitDialog(int resid) {
+    public ProgressDialog showWaitDialog(int resid) {
         FragmentActivity activity = getActivity();
         if (activity instanceof WaitDialogControl) {
             return ((WaitDialogControl) activity).showWaitDialog(resid);
@@ -81,7 +81,7 @@ public class BaseFragment extends Fragment {
         return null;
     }
 
-    protected ProgressDialog showWaitDialog(String str) {
+    public ProgressDialog showWaitDialog(String str) {
         FragmentActivity activity = getActivity();
         if (activity instanceof WaitDialogControl) {
             return ((WaitDialogControl) activity).showWaitDialog(str);
@@ -89,7 +89,7 @@ public class BaseFragment extends Fragment {
         return null;
     }
 
-    protected void hideWaitDialog() {
+    public void hideWaitDialog() {
         FragmentActivity activity = getActivity();
         if (activity instanceof WaitDialogControl) {
             ((WaitDialogControl) activity).hideWaitDialog();
