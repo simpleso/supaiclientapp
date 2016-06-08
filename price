@@ -1,18 +1,1 @@
-[
-    {
-        "name": "鲜花",
-        "price": 5,
-        "describe":"鲜花类物品需要支付5元服务费"
-    },
-    {
-        "name": "蛋糕",
-        "price": 5,
-        "describe":"蛋糕类物品需要支付5元服务费"
-    }
-    ,
-    {
-        "name": "测试",
-        "price": 0,
-        "describe":""
-    }
-]
+[{"name":"鲜花蛋糕","price":5,"describe":"鲜花蛋糕类物品需要支付5元服务费"},{"name":"美食夜宵","price":0,"describe":""},{"name":"果蔬生鲜","price":0,"describe":""},{"name":"文件票据","price":0,"describe":""},{"name":"电子产品","price":0,"describe":""},{"name":"礼品礼盒","price":0,"describe":""},{"name":"生活小件","price":0,"describe":""},{"name":"其他物品","price":0,"describe":""}]
