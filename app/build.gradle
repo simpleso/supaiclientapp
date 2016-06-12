@@ -8,8 +8,8 @@ android {
         applicationId "com.supaiclient.app"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 14
-        versionName "1.2.1"
+        versionCode 15
+        versionName "1.2.2"
         multiDexEnabled true
         multiDexKeepProguard file('multiDexKeep.pro')
     }
@@ -50,9 +50,6 @@ android {
         }
         goapk {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "goapk"]
-        }
-        meizu {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "meizu"]
         }
         meizu {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "meizu"]

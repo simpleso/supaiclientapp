@@ -1260,6 +1260,10 @@ public class SubmitOrderActivity extends BaseActivity implements View.OnClickLis
             ms += "," + rbBx.getText().toString();
         }
 
+        if (ms.startsWith(",")) {
+            ms.substring(1, ms.length());
+        }
+
         if (TextUtils.isEmpty(str)) {
             osb.setMessage(ms + str);
         } else {
