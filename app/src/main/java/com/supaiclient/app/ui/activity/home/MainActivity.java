@@ -45,7 +45,6 @@ import com.supaiclient.app.util.JSonUtils;
 import com.supaiclient.app.util.UIHelper;
 import com.supaiclient.app.util.UpdataManeger;
 import com.supaiclient.app.widget.SegmentControl;
-import com.testin.agent.TestinAgent;
 import com.umeng.update.UmengUpdateAgent;
 
 import org.kymjs.kjframe.KJBitmap;
@@ -530,13 +529,13 @@ public class MainActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         //注：回调 2
-        TestinAgent.onPause(this);
+      //  TestinAgent.onPause(this);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         //注：回调 3
-        TestinAgent.onDispatchTouchEvent(this, event);
+        //TestinAgent.onDispatchTouchEvent(this, event);
         return super.dispatchTouchEvent(event);
     }
 
@@ -595,7 +594,7 @@ public class MainActivity extends FragmentActivity {
 
         //L.e("onResume");
 
-        TestinAgent.onResume(this);
+      //  TestinAgent.onResume(this);
 
         UserApi.getMessageList(this, 0, AppConfig.PAGE_SIZE, new RequestBasetListener() {
             @Override

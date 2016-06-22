@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.anthonycr.grant.PermissionsManager;
 import com.anthonycr.grant.PermissionsResultAction;
 import com.baoyz.actionsheet.ActionSheet;
-
 import com.supaiclient.app.BaseApplication;
 import com.supaiclient.app.R;
 import com.supaiclient.app.api.UserApi;
@@ -27,7 +26,7 @@ import com.supaiclient.app.db.PropertyUtil;
 import com.supaiclient.app.interf.OnLoginBackLinstener;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.model.UserModel;
-import com.supaiclient.app.ui.activity.integral.IntegralActivity;
+import com.supaiclient.app.ui.activity.IntegralActivity;
 import com.supaiclient.app.ui.activity.user.AboutActivity;
 import com.supaiclient.app.ui.activity.user.OpinionActivity;
 import com.supaiclient.app.ui.activity.user.SenderActivity;

@@ -201,6 +201,13 @@
             android:configChanges="orientation"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.IntegralActivity"
+            android:configChanges="orientation"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.fragment.goods.WuJianActivity"
             android:configChanges="orientation"

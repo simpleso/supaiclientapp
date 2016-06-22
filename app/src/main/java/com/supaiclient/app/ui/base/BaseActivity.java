@@ -24,7 +24,6 @@ import com.supaiclient.app.util.DialogHelp;
 import com.supaiclient.app.util.L;
 import com.supaiclient.app.util.UIHelper;
 import com.supaiclient.app.util.UiTool;
-import com.testin.agent.TestinAgent;
 
 import butterknife.ButterKnife;
 
@@ -56,7 +55,7 @@ public class BaseActivity extends AppCompatActivity implements WaitDialogControl
         }
 
         if (AppConfig.isUseTestinCrash) {
-            TestinAgent.init(this);
+         //   TestinAgent.init(this);
         }
         ButterKnife.bind(this);
         init(savedInstanceState);
@@ -102,7 +101,7 @@ public class BaseActivity extends AppCompatActivity implements WaitDialogControl
         super.onResume();
         //注：回调 1
         if (AppConfig.isUseTestinCrash) {
-            TestinAgent.onResume(this);
+           // TestinAgent.onResume(this);
         }
     }
 
@@ -111,7 +110,7 @@ public class BaseActivity extends AppCompatActivity implements WaitDialogControl
         super.onPause();
         //注：回调 2
         if (AppConfig.isUseTestinCrash) {
-            TestinAgent.onPause(this);
+           // TestinAgent.onPause(this);
         }
     }
 
@@ -328,7 +327,7 @@ public class BaseActivity extends AppCompatActivity implements WaitDialogControl
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
         if (AppConfig.isUseTestinCrash) {
-            TestinAgent.onDispatchTouchEvent(this, ev);
+           // TestinAgent.onDispatchTouchEvent(this, ev);
         }
         // 处理 点击 外部 关闭 键盘
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {

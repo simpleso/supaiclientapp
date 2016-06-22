@@ -16,12 +16,9 @@ import com.supaiclient.app.db.PropertyUtil;
 import com.supaiclient.app.interf.RequestBasetListener;
 import com.supaiclient.app.model.UserModel;
 import com.supaiclient.app.ui.activity.GuideActivity;
-import com.supaiclient.app.util.AppConfig;
 import com.supaiclient.app.util.L;
 import com.supaiclient.app.util.MD5;
 import com.supaiclient.app.util.UIHelper;
-import com.testin.agent.TestinAgent;
-import com.testin.agent.TestinAgentConfig;
 import com.umeng.analytics.MobclickAgent;
 
 import org.kymjs.kjframe.http.HttpParams;
@@ -83,22 +80,22 @@ public class AppStartActivity extends Activity {
 
 //        new OrderDao(this).updateNumber("123123");
 
-        if (AppConfig.isUseTestinCrash) {
-
-            TestinAgentConfig config = new TestinAgentConfig.Builder(this)
-                    .withUserInfo(PropertyUtil.getUinfo())// 用户信息-崩溃分析根据用户记录崩溃信息
-                    .withDebugModel(true)        // 输出更多SDK的debug信息
-                    .withErrorActivity(true)     // 发生崩溃时采集Activity信息
-                    .withCollectNDKCrash(true)   // 收集NDK崩溃信息
-                    .withOpenCrash(true)         // 收集崩溃信息开关
-                    .withOpenEx(true)            // 是否收集异常信息
-                    .withReportOnlyWifi(true)    // 仅在 WiFi 下上报崩溃信息
-                    .withReportOnBack(true)      // 当APP在后台运行时,是否采集信息
-                    .withQAMaster(true)          // 是否收集摇一摇反馈
-                    .withCloseOption(true)       // 是否在摇一摇菜单展示‘关闭摇一摇选项’
-                    .build();
-            TestinAgent.init(config);
-        }
+//        if (AppConfig.isUseTestinCrash) {
+//
+//            TestinAgentConfig config = new TestinAgentConfig.Builder(this)
+//                    .withUserInfo(PropertyUtil.getUinfo())// 用户信息-崩溃分析根据用户记录崩溃信息
+//                    .withDebugModel(true)        // 输出更多SDK的debug信息
+//                    .withErrorActivity(true)     // 发生崩溃时采集Activity信息
+//                    .withCollectNDKCrash(true)   // 收集NDK崩溃信息
+//                    .withOpenCrash(true)         // 收集崩溃信息开关
+//                    .withOpenEx(true)            // 是否收集异常信息
+//                    .withReportOnlyWifi(true)    // 仅在 WiFi 下上报崩溃信息
+//                    .withReportOnBack(true)      // 当APP在后台运行时,是否采集信息
+//                    .withQAMaster(true)          // 是否收集摇一摇反馈
+//                    .withCloseOption(true)       // 是否在摇一摇菜单展示‘关闭摇一摇选项’
+//                    .build();
+//            TestinAgent.init(config);
+//        }
 
         isautologin = new UserModel(this).isAutoLogin();
 
